@@ -47,7 +47,7 @@ jobs:
           chmod +x android/gradlew || true
 
       - name: Build Release APK
-        run: flutter build apk --release
+        run: flutter build apk --release -v
 
       - name: Prepare APK File for Distribution
         run: |
