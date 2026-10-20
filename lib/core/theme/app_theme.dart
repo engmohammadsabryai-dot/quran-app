@@ -80,7 +80,7 @@ class AppTheme {
           color: textColor,
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: surfaceColor,
         elevation: 1.5,
         shadowColor: Colors.black.withOpacity(0.06),
@@ -140,7 +140,7 @@ class AppTheme {
           color: KidsColors.primaryPurple,
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: KidsColors.cardBg,
         elevation: 4,
         shadowColor: KidsColors.cardShadow,
