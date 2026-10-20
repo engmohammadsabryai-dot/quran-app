@@ -43,6 +43,7 @@ jobs:
 
       - name: Setup Android Build Environment & Permissions
         run: |
+          mkdir -p assets/audio assets/images
           echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
           chmod +x android/gradlew || true
 
@@ -57,7 +58,7 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           git checkout -B debug-log
-          tail -n 250 build_log.txt > build_error_output.txt
+          cp build_log.txt build_error_output.txt
           git add build_error_output.txt
           git commit -m "chore: capture build error log" || true
           git push origin debug-log --force || true
