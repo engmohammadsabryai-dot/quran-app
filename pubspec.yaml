@@ -1,0 +1,51 @@
+name: quran_memorization_engine
+description: "Production-Grade Offline-First Quran Memorization & Habit Engine (Flutter Multiplatform)"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+  flutter: ">=3.19.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # State Management & Architecture
+  flutter_bloc: ^8.1.5
+  equatable: ^2.0.5
+
+  # Local Persistence & Drift SQLite
+  drift: ^2.16.0
+  sqlite3_flutter_libs: ^0.5.21
+  path_provider: ^2.1.2
+  path: ^1.9.0
+  flutter_secure_storage: ^9.0.0
+
+  # Audio Engine & Background Processing
+  just_audio: ^0.9.36
+  audio_service: ^0.18.12
+  rxdart: ^0.27.7
+
+  # Networking & HTTP Resiliency
+  dio: ^5.4.1
+
+  # Utilities, Identifiers & UI
+  uuid: ^4.3.3
+  intl: ^0.20.3
+  google_fonts: ^6.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  drift_dev: ^2.16.0
+  build_runner: ^2.4.8
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/audio/
+    - assets/images/

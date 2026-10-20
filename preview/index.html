@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مصحف الحفظ والورد القرآني - محاكي التطبيق التفاعلي</title>
+  <!-- Google Fonts: Amiri, Amiri Quran, Cairo -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="adult-theme">
+  <!-- Top Navigation Bar -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="app-title-area">
+        <span class="logo-icon">📖</span>
+        <div>
+          <h1 id="app-heading">مصحف الحفظ والورد القرآني</h1>
+          <p class="subtitle" id="app-subheading">نظام الأرباع والجدولة الكلاسيكية المتقنة</p>
+        </div>
+      </div>
+
+      <!-- Mode & Profile Switcher Toolbar -->
+      <div class="header-actions">
+        <!-- Dual Mode Switcher -->
+        <div class="mode-toggle-group">
+          <button id="btn-mode-adult" class="mode-btn active" onclick="switchTheme('adult')">
+            <span class="mode-icon">📜</span>
+            <span>وضع الكبار</span>
+          </button>
+          <button id="btn-mode-kids" class="mode-btn" onclick="switchTheme('kids')">
+            <span class="mode-icon">🌸</span>
+            <span>وضع الأطفال وبستان القرآن</span>
+          </button>
+        </div>
+
+        <!-- Export APK Button -->
+        <button class="export-apk-btn" onclick="openApkModal()">
+          <span>📱</span>
+          <span>تصدير وتشغيل APK</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Simulator Container -->
+  <main class="main-layout">
+    <div class="device-wrapper">
+      
+      <!-- ==================== ADULT MODE VIEW ==================== -->
+      <section id="adult-view" class="view-section active">
+        <!-- Analytics Dashboard Header -->
+        <div class="analytics-card">
+          <div class="analytics-row">
+            <div class="circular-progress-wrap">
+              <div class="circular-progress" style="--p: 28;">
+                <span class="progress-val">28.5%</span>
+              </div>
+              <span class="progress-lbl">نسبة الإنجاز</span>
+            </div>
+            <div class="analytics-summary">
+              <h3>مؤشرات الإنجاز والمسار القرآني</h3>
+              <p>أتممت <strong id="completed-quarters-count">4</strong> من 240 ربعاً (236 متبقٍ)</p>
+              <div class="linear-bar">
+                <div class="linear-bar-fill" style="width: 28.5%;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="metrics-grid">
+            <div class="metric-box">
+              <span class="metric-icon">📋</span>
+              <span class="metric-value">280</span>
+              <span class="metric-title">إجمالي الأوراد</span>
+            </div>
+            <div class="metric-box success">
+              <span class="metric-icon">✅</span>
+              <span class="metric-value" id="metric-completed">4</span>
+              <span class="metric-title">المكتملة</span>
+            </div>
+            <div class="metric-box warning" id="delayed-box" onclick="openCompensationModal()">
+              <span class="metric-icon">⚠️</span>
+              <span class="metric-value" id="metric-delayed">1</span>
+              <span class="metric-title">أوراد متأخرة</span>
+            </div>
+            <div class="metric-box fire">
+              <span class="metric-icon">🔥</span>
+              <span class="metric-value">3 أيام</span>
+              <span class="metric-title">التتابع النشط</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== MEMORIZATION SYSTEM SELECTOR (الأرباع vs الصفحات) ==================== -->
+        <div class="system-mode-card">
+          <div class="system-mode-header">
+            <div class="title-with-icon">
+              <span>🎯</span>
+              <h3>نظام وطريقة الحفظ المعتمدة</h3>
+            </div>
+            <span class="system-status-pill" id="system-status-pill">طريقة الصفحات مفعلة</span>
+          </div>
+
+          <div class="system-tabs-row">
+            <button type="button" class="system-tab-btn active" id="tab-system-page" onclick="setMemorizationSystem('page')">
+              <div class="tab-badge-icon">📖</div>
+              <div class="tab-text-wrap">
+                <span class="tab-main-title">طريقة الصفحات (مصحف المدينة)</span>
+                <span class="tab-sub-title">حفظ صفحة بصفحة (604 صفحة)</span>
+              </div>
+            </button>
+            <button type="button" class="system-tab-btn" id="tab-system-rub" onclick="setMemorizationSystem('rub')">
+              <div class="tab-badge-icon">📜</div>
+              <div class="tab-text-wrap">
+                <span class="tab-main-title">طريقة الأرباع (الأحزاب والأرباع)</span>
+                <span class="tab-sub-title">حفظ ربعاً بربع (240 ربعاً)</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- ==================== SURAH & AYAH RANGE CONTROLLER ==================== -->
+        <div class="range-controller-card">
+          <div class="controller-header">
+            <div class="title-with-icon">
+              <span>🎛️</span>
+              <h3>تحديد السورة ونطاق الآيات للحفظ والترديد</h3>
+            </div>
+            <span class="range-indicator-pill" id="range-indicator-pill">سورة البقرة • الآيات (1 - 5)</span>
+          </div>
+
+          <div class="controller-controls-grid">
+            <!-- Surah Selector -->
+            <div class="controller-field">
+              <label for="surah-select">
+                <span>📖</span>
+                <span>اختر السورة:</span>
+              </label>
+              <select id="surah-select" class="form-select range-select" onchange="onSurahSelectChange()">
+                <!-- Populated dynamically via JS -->
+              </select>
+            </div>
+
+            <!-- Page Selector (Visible in Page Mode) -->
+            <div class="controller-field" id="page-selector-group">
+              <label for="page-select">
+                <span>📄</span>
+                <span>صفحة المصحف المدني:</span>
+              </label>
+              <div class="stepper-wrap">
+                <button type="button" class="step-btn" onclick="stepMushafPage(-1)" title="الصفحة السابقة">◀</button>
+                <select id="page-select" class="form-select range-select" onchange="onPageSelectChange()">
+                  <!-- Populated dynamically via JS -->
+                </select>
+                <button type="button" class="step-btn" onclick="stepMushafPage(1)" title="الصفحة التالية">▶</button>
+              </div>
+            </div>
+
+            <!-- Rub' Selector (Visible in Rub Mode) -->
+            <div class="controller-field" id="rub-selector-group" style="display: none;">
+              <label for="rub-select">
+                <span>📜</span>
+                <span>الربع من الحزب:</span>
+              </label>
+              <div class="stepper-wrap">
+                <button type="button" class="step-btn" onclick="stepRubQuarter(-1)" title="الربع السابق">◀</button>
+                <select id="rub-select" class="form-select range-select" onchange="onRubSelectChange()">
+                  <!-- Populated dynamically via JS -->
+                </select>
+                <button type="button" class="step-btn" onclick="stepRubQuarter(1)" title="الربع التالي">▶</button>
+              </div>
+            </div>
+
+            <!-- Ayah Range (From - To) -->
+            <div class="controller-field range-span-field">
+              <label>
+                <span>🔢</span>
+                <span>نطاق الآيات المراد تلاوتها وترديدها:</span>
+              </label>
+              <div class="range-inputs-container">
+                <div class="num-box">
+                  <span class="box-label">من آية:</span>
+                  <input type="number" id="input-range-from" class="range-input" min="1" max="286" value="1" onchange="onManualRangeChange()">
+                </div>
+                <span class="range-separator">⬅️</span>
+                <div class="num-box">
+                  <span class="box-label">إلى آية:</span>
+                  <input type="number" id="input-range-to" class="range-input" min="1" max="286" value="5" onchange="onManualRangeChange()">
+                </div>
+                <button type="button" class="apply-range-button" onclick="applyCustomRange()">
+                  <span>تطبيق النطاق</span>
+                  <span>✓</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Range Presets Chips -->
+          <div class="quick-presets-chips">
+            <span class="chips-title">نطاقات سريعة:</span>
+            <button type="button" class="range-chip active" id="chip-full-page" onclick="setRangePreset('page')">كامل الصفحة (1 - 5)</button>
+            <button type="button" class="range-chip" id="chip-single-ayah" onclick="setRangePreset('single')">الآية الحالية فقط</button>
+            <button type="button" class="range-chip" id="chip-three-ayahs" onclick="setRangePreset('three')">٣ آيات (1 - 3)</button>
+            <button type="button" class="range-chip" id="chip-rub-portion" onclick="setRangePreset('rub')">الربع كاملاً (1 - 25)</button>
+          </div>
+        </div>
+
+        <!-- ==================== MADANI MUSHAF PAGE DISPLAY (صفحة المصحف المدني كاملة) ==================== -->
+        <div class="madani-mushaf-card" id="madani-mushaf-card">
+          <!-- Top Mushaf Header Ribbon -->
+          <div class="mushaf-ribbon-bar">
+            <div class="ribbon-box right" id="mushaf-ribbon-juz">الجُزْءُ الأَوَّلُ</div>
+            <div class="ribbon-box center" id="mushaf-ribbon-surah">سُورَةُ البَقَرَةِ</div>
+            <div class="ribbon-box left" id="mushaf-ribbon-hizb">الحِزْبُ الأَوَّلُ • الرُّبْعُ الأَوَّلُ</div>
+          </div>
+
+          <!-- Madani Mushaf Ornate Golden Frame -->
+          <div class="mushaf-outer-border">
+            <div class="mushaf-inner-border">
+              
+              <!-- Surah Plaque Header -->
+              <div class="mushaf-surah-plaque" id="mushaf-surah-plaque">
+                <span class="plaque-corner right">۞</span>
+                <div class="plaque-center">
+                  <span class="plaque-title" id="plaque-surah-title">سُورَةُ البَقَرَةِ</span>
+                  <span class="plaque-desc" id="plaque-surah-desc">مَدَنِيَّةٌ • آيَاتُهَا ٢٨٦</span>
+                </div>
+                <span class="plaque-corner left">۞</span>
+              </div>
+
+              <!-- Sacred Basmalah Header (Strictly unnumbered, not counted as an Ayah for Al-Baqarah) -->
+              <div class="mushaf-basmalah-plaque" id="mushaf-basmalah-plaque">
+                <div class="basmalah-ornament">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+                <span class="basmalah-caption">(فصل استفتاح وتبرك • ليست آية معدودة في سورة البقرة)</span>
+              </div>
+
+              <!-- Complete Mushaf Page Content with Dynamic Ayah Highlighting -->
+              <div class="mushaf-verses-area" id="mushaf-verses-area">
+                <!-- Dynamically populated with authentic Uthmanic verses -->
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Bottom Page Indicator Ribbon -->
+          <div class="mushaf-page-footer">
+            <div class="page-number-ornament">
+              <span class="ornament-bracket">﴿</span>
+              <span id="mushaf-page-num">٢</span>
+              <span class="ornament-bracket">﴾</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== ACTIVE AYAH HIGHLIGHT & REPETITION STATUS ==================== -->
+        <div class="spotlight-card">
+          <div class="spotlight-tag">الآية قيد الترديد والاستماع الآن</div>
+          <div class="active-ayah-box" id="active-ayah-box">
+            <div class="ayah-repeat-indicator">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="live-dot" id="live-dot"></span>
+                <span id="live-repeat-state">الآية 1 من 5 • تكرار: 1 / 3</span>
+              </div>
+              <span class="sync-verified-pill" id="sync-verified-pill" title="تم التحقق الصوتي من مطابقة الكلمات المنطوقة مع النص المكتوب بدقة تامة">🎯 تطابق لفظي 100%</span>
+            </div>
+            <p class="live-ayah-text" id="active-portion-ayah-text">الم</p>
+          </div>
+
+          <!-- Play Portion Action -->
+          <div class="spotlight-actions">
+            <button class="primary-btn" id="spotlight-play-btn" onclick="togglePlayAudio()">
+              <span id="play-btn-icon">▶</span>
+              <span id="play-btn-text">تشغيل الاستماع والترديد بالنطاق المحدد</span>
+            </button>
+            <button class="secondary-btn" onclick="toggleTaskCompletion()">
+              <span id="check-btn-icon">✓</span>
+              <span id="check-btn-text">تسجيل إتمام الورد كاملاً</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Five-Prayer Allocation Planner (مصحف الصلوات الخمس) -->
+        <div class="prayer-planner-card">
+          <div class="card-header">
+            <div class="title-with-icon">
+              <span>🕌</span>
+              <h3>مصحف الصلوات الخمس - توزيع الورد على الركعات</h3>
+            </div>
+            <span class="prayer-badge" id="prayer-badge-text">0 / 5 صلوات</span>
+          </div>
+          <div class="prayers-list">
+            <div class="prayer-item" onclick="togglePrayer(0)">
+              <div class="checkbox" id="prayer-chk-0"></div>
+              <div class="prayer-name-tag">الفجر</div>
+              <div class="prayer-detail">
+                <span class="portion-text">الآيات (1 - 5) في ركعتي الفجر (سنة + فرض)</span>
+                <span class="rakah-note">قراءة متأنية مع خشوع الفجر</span>
+              </div>
+            </div>
+            <div class="prayer-item" onclick="togglePrayer(1)">
+              <div class="checkbox" id="prayer-chk-1"></div>
+              <div class="prayer-name-tag">الظهر</div>
+              <div class="prayer-detail">
+                <span class="portion-text">الآيات (6 - 11) في الركعات الأربع والسنن</span>
+                <span class="rakah-note">تثبيت الآيات في فريضة الظهر</span>
+              </div>
+            </div>
+            <div class="prayer-item" onclick="togglePrayer(2)">
+              <div class="checkbox" id="prayer-chk-2"></div>
+              <div class="prayer-name-tag">العصر</div>
+              <div class="prayer-detail">
+                <span class="portion-text">الآيات (12 - 16) في أربع ركعات الفرض</span>
+                <span class="rakah-note">تكرار وضبط الكلمات</span>
+              </div>
+            </div>
+            <div class="prayer-item" onclick="togglePrayer(3)">
+              <div class="checkbox" id="prayer-chk-3"></div>
+              <div class="prayer-name-tag">المغرب</div>
+              <div class="prayer-detail">
+                <span class="portion-text">الآيات (17 - 20) في ثلاث ركعات الفرض</span>
+                <span class="rakah-note">استحضار المعاني قبل العشاء</span>
+              </div>
+            </div>
+            <div class="prayer-item isha-item" onclick="togglePrayer(4)">
+              <div class="checkbox" id="prayer-chk-4"></div>
+              <div class="prayer-name-tag isha">العشاء والقيام</div>
+              <div class="prayer-detail">
+                <span class="portion-text">مراجعة وتثبيت كامل الورد (الآيات 1 - 25) في الشفع والوتر والقيام</span>
+                <span class="rakah-note">الختم النهائي والتثبيت الراسخ</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Classical Tabular Paper Tracker -->
+        <div class="table-tracker-card">
+          <div class="card-header green-header">
+            <div class="title-with-icon">
+              <span>📊</span>
+              <h3>جدول متابعة الأوراد (نظام الجدولة الكلاسيكي لـ 280 يوماً)</h3>
+            </div>
+            <span class="count-tag">أول أسبوعين</span>
+          </div>
+          <div class="table-wrapper">
+            <table class="schedule-table">
+              <thead>
+                <tr>
+                  <th>م</th>
+                  <th>اليوم</th>
+                  <th>المقدار والسورة</th>
+                  <th>الصلوات</th>
+                  <th>الحالة</th>
+                </tr>
+              </thead>
+              <tbody id="schedule-tbody">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== KIDS GAMIFIED VIEW ==================== -->
+      <section id="kids-view" class="view-section">
+        <!-- Interactive Character Chooser & Custom Name Input -->
+        <div class="character-chooser-card">
+          <div class="character-chooser-title">
+            <span>🎭</span>
+            <span>اختر شخصيتك المفضلة أو اكتب اسمك بنفسك:</span>
+          </div>
+          <div class="character-chips-row">
+            <button type="button" class="char-chip active" id="chip-salem" onclick="selectKidsCharacter('سالم', '👦')">
+              <span class="char-avatar">👦</span>
+              <span class="char-name">سالم</span>
+            </button>
+            <button type="button" class="char-chip" id="chip-sarah" onclick="selectKidsCharacter('سارة', '👧')">
+              <span class="char-avatar">👧</span>
+              <span class="char-name">سارة</span>
+            </button>
+            <button type="button" class="char-chip" id="chip-aisha" onclick="selectKidsCharacter('عائشة', '🧕')">
+              <span class="char-avatar">🧕</span>
+              <span class="char-name">عائشة</span>
+            </button>
+            <button type="button" class="char-chip" id="chip-maryam" onclick="selectKidsCharacter('مريم', '🌸')">
+              <span class="char-avatar">🌸</span>
+              <span class="char-name">مريم</span>
+            </button>
+          </div>
+          <div class="custom-name-row">
+            <input type="text" id="custom-child-name-input" placeholder="اكتب اسمك يا بطل بنفسك هنا..." maxlength="25">
+            <button type="button" class="btn-apply-name" onclick="applyCustomKidsName()">
+              <span>تأكيد الاسم ✨</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Virtual Mascot Companion ("سالم" / "سارة" / "عائشة" / "مريم") -->
+        <div class="mascot-card">
+          <div class="mascot-avatar" id="mascot-avatar" onclick="mascotCheer()">
+            <span id="mascot-emoji">👦</span>
+          </div>
+          <div class="mascot-bubble">
+            <div class="mascot-header">
+              <strong id="mascot-name">صديقك سالم</strong>
+              <span class="voice-icon">🔊</span>
+            </div>
+            <p id="mascot-text">أهلاً بك يا بطل القرآن! هيا نسقي شجرة القرآن معاً بإنجاز ورد اليوم! 🌱</p>
+          </div>
+        </div>
+
+        <!-- The Quran Garden (شجرة القرآن) -->
+        <div class="garden-card">
+          <div class="garden-header">
+            <div class="stat-pill gold">
+              <span>⭐</span>
+              <span id="kids-stars">25 نجمة</span>
+            </div>
+            <div class="stat-pill sky">
+              <span>💧</span>
+              <span id="kids-water">7 قطرات</span>
+            </div>
+          </div>
+
+          <div class="garden-stage-badge" id="garden-stage-title">
+            المرحلة ٣: الغرسة النامية المتأصلة 🪴
+          </div>
+
+          <!-- Tree Graphic Container -->
+          <div class="tree-canvas-wrap">
+            <div class="tree-display stage-3" id="tree-display">
+              <div class="tree-aura"></div>
+              <div class="tree-canopy"></div>
+              <div class="tree-trunk"></div>
+              <div class="tree-soil"></div>
+              <div class="fruits-container" id="fruits-container"></div>
+            </div>
+          </div>
+
+          <!-- Water Action -->
+          <button class="water-tree-btn" onclick="waterQuranTree()">
+            <span>💧</span>
+            <span>اسقِ شجرة القرآن بورد اليوم</span>
+          </button>
+        </div>
+
+        <!-- Bubble Pop Quiz Launcher -->
+        <div class="quiz-banner" onclick="openBubbleQuiz()">
+          <div class="bubble-icon">🫧</div>
+          <div class="quiz-info">
+            <h4>تحدي فرقعة الفقاعات القرآني!</h4>
+            <p>فرقع الفقاعة واكسب نجوماً ذهبية لبستانك</p>
+          </div>
+          <span class="arrow-icon">◀</span>
+        </div>
+
+        <!-- Today's Child Surah Card -->
+        <div class="child-task-card">
+          <div class="child-card-header">
+            <span class="task-badge">ورد اليوم يا بطل 📖</span>
+            <span class="stars-earned" id="kid-stars-earned">⭐⭐⭐</span>
+          </div>
+          <h3>سورة الإخلاص</h3>
+          <p class="surah-ayahs">الآيات الكريمة من 1 إلى 4 • المصحف المعلم مع الأطفال</p>
+
+          <!-- Interactive Ayah Display Showcase for Kids -->
+          <div class="kid-ayah-showcase" id="kid-ayah-showcase">
+            <div class="kid-ayah-pill-nav">
+              <span class="kid-step-pill active" id="kid-step-1" onclick="jumpToKidAyah(1)">الآية ١</span>
+              <span class="kid-step-pill" id="kid-step-2" onclick="jumpToKidAyah(2)">الآية ٢</span>
+              <span class="kid-step-pill" id="kid-step-3" onclick="jumpToKidAyah(3)">الآية ٣</span>
+              <span class="kid-step-pill" id="kid-step-4" onclick="jumpToKidAyah(4)">الآية ٤</span>
+            </div>
+            <div class="kid-ayah-text" id="kid-ayah-text">قُلْ هُوَ اللَّهُ أَحَدٌ ۝١</div>
+            <div class="kid-reciter-indicator">
+              <span class="pulse-dot"></span>
+              <span id="kid-reciter-status-text">الشيخ المنشاوي يقرأ ويردد الأطفال</span>
+            </div>
+          </div>
+
+          <button class="kid-listen-btn" id="kid-main-play-btn" onclick="playKidSurah()">
+            <span>🎙️</span>
+            <span id="kid-play-btn-text">استمع وردد مع الشيخ والأطفال</span>
+          </button>
+          <button class="kid-done-btn" onclick="completeKidTask()">
+            <span>🌟</span>
+            <span>أنا جاهز وحفظت الورد اليوم! ✓</span>
+          </button>
+        </div>
+
+        <!-- Parental Reward Contract Card -->
+        <div class="parental-reward-card">
+          <div class="reward-header">
+            <span class="reward-box-icon">🎁</span>
+            <div>
+              <h4>مجموعة تركيب روبوت أو ليغو</h4>
+              <p>عقد مكافأة إتقان حفظ أول 8 أرباع بدون تأخير</p>
+            </div>
+          </div>
+          <div class="milestone-progress">
+            <div class="milestone-labels">
+              <span>الهدف: حفظ 8 أرباع</span>
+              <span>4 / 8</span>
+            </div>
+            <div class="milestone-bar">
+              <div class="milestone-bar-fill" style="width: 50%;"></div>
+            </div>
+          </div>
+          <button class="claim-reward-btn" onclick="claimParentalReward()">
+            <span>🏆</span>
+            <span>استلام الجائزة مع الوالدين</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ==================== PERSISTENT BOTTOM MINI PLAYER ==================== -->
+      <footer class="mini-player" id="mini-player">
+        <!-- Progress line -->
+        <div class="player-progress-line">
+          <div class="player-progress-fill" id="player-progress-fill" style="width: 0%;"></div>
+        </div>
+
+        <div class="player-main">
+          <!-- Play / Pause Button -->
+          <button class="play-circle-btn" id="main-play-btn" onclick="togglePlayAudio()">
+            <span id="player-icon">▶</span>
+          </button>
+
+          <!-- Current Ayah & Reciter -->
+          <div class="player-meta">
+            <div class="meta-title">
+              <span id="player-surah-name">سورة البقرة</span>
+              <span class="ayah-pill" id="player-ayah-num">الآية 1</span>
+            </div>
+            <span class="reciter-name" id="player-reciter-name">محمود خليل الحصري (مرتل)</span>
+          </div>
+
+          <!-- Controls: Prev, Next, Settings -->
+          <div class="player-controls">
+            <button class="ctrl-btn" onclick="skipPrevAyah()" title="الآية السابقة">⏮</button>
+            <button class="ctrl-btn" onclick="skipNextAyah()" title="الآية التالية">⏭</button>
+            <button class="ctrl-btn" onclick="openAudioSettings()" title="إعدادات التكرار">⚙️</button>
+          </div>
+        </div>
+
+        <!-- Repetition Status & Silent Interval Countdown -->
+        <div class="player-subbar">
+          <span class="rep-badge active-rep" id="rep-ayah-badge">تكرار الآية: 1/3 (N)</span>
+          <span class="rep-badge" id="rep-range-badge">دورة الورد: 1/1 (M)</span>
+          <span class="delay-badge" id="delay-badge">وقفة الترديد: 2ث (T)</span>
+          <button type="button" class="quick-rep-btn" onclick="repeatCurrentAyahNow()" title="إعادة تكرار هذه الآية فوراً">🔁 كرر الآن</button>
+        </div>
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- 1. Mutashabihat Comparison Modal -->
+  <div id="modal-mutashabiha" class="modal-overlay" onclick="closeModals(event)">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="title-with-icon">
+          <span>🔄</span>
+          <h3>محرك المتشابهات اللفظية والضبط</h3>
+        </div>
+        <button class="close-modal-btn" onclick="closeAllModals()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="dual-card-wrap">
+          <!-- Card 1 -->
+          <div class="comparison-card card-1">
+            <span class="pos-badge">الموضع الأول: سورة البقرة (الآية 48)</span>
+            <p class="ayah-quran-text">
+              وَاتَّقُوا يَوْمًا لَّا تَجْزِي نَفْسٌ عَن نَّفْسٍ شَيْئًا <mark class="diff-highlight">وَلَا يُقْبَلُ مِنْهَا شَفَاعَةٌ وَلَا يُؤْخَذُ مِنْهَا عَدْلٌ</mark> وَلَا هُمْ يُنصَرُونَ
+            </p>
+          </div>
+          <!-- Card 2 -->
+          <div class="comparison-card card-2">
+            <span class="pos-badge gold">الموضع الثاني: سورة البقرة (الآية 123)</span>
+            <p class="ayah-quran-text">
+              وَاتَّقُوا يَوْمًا لَّا تَجْزِي نَفْسٌ عَن نَّفْسٍ شَيْئًا <mark class="diff-highlight gold">وَلَا يُقْبَلُ مِنْهَا عَدْلٌ وَلَا تَنفَعُهَا شَفَاعَةٌ</mark> وَلَا هُمْ يُنصَرُونَ
+            </p>
+          </div>
+        </div>
+
+        <div class="rule-box">
+          <div class="rule-title">
+            <span>💡</span>
+            <strong>قاعدة الضبط والربط للحفظ المتقن:</strong>
+          </div>
+          <p>
+            <strong>قاعدة الترتيب الهجائي والأسبقية:</strong> في الموضع الأول (48) قُدِّمت الشفاعة لأن الشين تسبق العين في الذكر، وتأخرت في الموضع الثاني (123)؛ ومع الشفاعة في الأول: (يُقْبَلُ) بالتذكير، وفي الثاني: (تَنفَعُهَا) بالتأنيث.
+          </p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="primary-btn" onclick="closeAllModals()">فهمت الفرق وسأثبته في ورِدي ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Smart Delay Compensation Modal -->
+  <div id="modal-compensation" class="modal-overlay" onclick="closeModals(event)">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="title-with-icon">
+          <span>🩹</span>
+          <h3>خطة التعويض الذكي للأوراد المتأخرة</h3>
+        </div>
+        <button class="close-modal-btn" onclick="closeAllModals()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="info-alert">
+          لديك ورد واحد متأخر من الأيام السابقة. الاستمرارية هي الأساس! اختر استراتيجية التعويض الأنسب لك:
+        </div>
+        <div class="strategy-options">
+          <label class="strategy-option">
+            <input type="radio" name="comp-strat" value="friday" checked>
+            <div>
+              <strong>1. التعويض المكثف في مراجعة الجمعة</strong>
+              <p>إعادة جدولة الأوراد المتأخرة مباشرة في جلسة يوم الجمعة المخصصة للمراجعة دون تغيير تواريخ باقي الأسبوع.</p>
+            </div>
+          </label>
+          <label class="strategy-option">
+            <input type="radio" name="comp-strat" value="gradual">
+            <div>
+              <strong>2. التقسيم التدريجي الميسر (+0.5 ربع)</strong>
+              <p>توزيع المقدار المتأخر كزيادة طفيفة (نصف ربع إضافي) مع الأوراد القادمة منعاً للإجهاد الذهني.</p>
+            </div>
+          </label>
+          <label class="strategy-option">
+            <input type="radio" name="comp-strat" value="shift">
+            <div>
+              <strong>3. إزاحة الجدول الزمني للأمام</strong>
+              <p>ترحيل مواعيد الأوراد القادمة بمقدار عدد أيام التأخير تلقائياً للحفاظ على نفس وتيرة الحفظ الهادئة.</p>
+            </div>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="primary-btn" onclick="applyCompensationStrategy()">تطبيق استراتيجية التعويض</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Audio & Nested Loop Settings Modal -->
+  <div id="modal-audio-settings" class="modal-overlay" onclick="closeModals(event)">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="title-with-icon">
+          <span>⚙️</span>
+          <h3>إعدادات محرك الصوت والتكرار المتقدم</h3>
+        </div>
+        <button class="close-modal-btn" onclick="closeAllModals()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="riwayah-select" style="display: flex; align-items: center; gap: 6px; font-weight: 700;">
+            <span>📖</span>
+            <span>اختر الرواية / القراءة القرآنية:</span>
+          </label>
+          <select id="riwayah-select" class="form-select" onchange="onRiwayahChange()">
+            <option value="hafs" selected>رواية حفص عن عاصم (الكوفي)</option>
+            <option value="qaloon">رواية قالون عن نافع (المدني)</option>
+            <option value="warsh">رواية ورش عن نافع (المدني)</option>
+            <option value="hamzah">قراءة حمزة - رواية خلف عن حمزة</option>
+            <option value="kisai">قراءة الكسائي - الدوري وأبو الحارث</option>
+            <option value="soosi">قراءة أبي عمرو - السوسي بالإدغام الكبير</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="reciter-select" style="display: flex; align-items: center; gap: 6px; font-weight: 700;">
+            <span>👳</span>
+            <span id="reciter-select-label">الشيخ القارئ برواية (حفص عن عاصم):</span>
+          </label>
+          <select id="reciter-select" class="form-select" onchange="onReciterChange()">
+            <!-- Dynamically populated via JS -->
+          </select>
+        </div>
+
+        <div class="form-group">
+          <div class="slider-header">
+            <label>تكرار كل آية منفردة (N):</label>
+            <span class="val-pill" id="val-rep-ayah">3 مرات</span>
+          </div>
+          <div class="quick-presets-row">
+            <button type="button" class="preset-btn" id="preset-btn-1" onclick="setRepPreset(1)">1 مرة</button>
+            <button type="button" class="preset-btn active" id="preset-btn-3" onclick="setRepPreset(3)">3 مرات (تثبيت)</button>
+            <button type="button" class="preset-btn" id="preset-btn-5" onclick="setRepPreset(5)">5 مرات (إتقان)</button>
+            <button type="button" class="preset-btn" id="preset-btn-7" onclick="setRepPreset(7)">7 مرات</button>
+            <button type="button" class="preset-btn" id="preset-btn-10" onclick="setRepPreset(10)">10 مرات (رسوخ)</button>
+          </div>
+          <input type="range" id="slider-rep-ayah" min="1" max="20" value="3" oninput="updateSliders()">
+        </div>
+
+        <div class="form-group">
+          <div class="slider-header">
+            <label>تكرار كامل المقدار / الورد (M):</label>
+            <span class="val-pill" id="val-rep-range">1 مرة</span>
+          </div>
+          <input type="range" id="slider-rep-range" min="1" max="10" value="1" oninput="updateSliders()">
+        </div>
+
+        <div class="form-group">
+          <div class="slider-header">
+            <label>وقفة صامتة للترديد الذهني والصوتي (T):</label>
+            <span class="val-pill" id="val-delay">2 ثوانٍ</span>
+          </div>
+          <input type="range" id="slider-delay" min="0" max="15" value="2" oninput="updateSliders()">
+        </div>
+
+        <!-- Live Repetition Test Button -->
+        <div class="test-rep-wrap">
+          <button type="button" class="test-rep-trigger-btn" onclick="runLiveRepetitionDemo()">
+            <span>⚡</span>
+            <span>بدء تجربة التكرار فوراً (3 دورات مع وقفة الترديد)</span>
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="primary-btn" onclick="saveAudioSettings()">حفظ إعدادات التكرار وبدء الاستماع ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Gamified Bubble Pop Quiz Modal -->
+  <div id="modal-bubble-quiz" class="modal-overlay" onclick="closeModals(event)">
+    <div class="modal-card quiz-card">
+      <div class="modal-header">
+        <div class="title-with-icon">
+          <span>🫧</span>
+          <h3>تحدي فرقعة الفقاعات القرآني</h3>
+        </div>
+        <div class="quiz-score-badge" id="quiz-score">النقاط: 0</div>
+      </div>
+      <div class="modal-body">
+        <div class="quiz-prompt-box">
+          <p class="quiz-instruction">فرقع الفقاعة التي تكمل الآية الكريمة! 🎈</p>
+          <h2 class="ayah-prompt" id="quiz-ayah-text">قُلْ أَعُوذُ بِرَبِّ .......</h2>
+          <span class="surah-hint">سورة الفلق</span>
+        </div>
+
+        <!-- Floating Bubbles Area -->
+        <div class="bubbles-arena" id="bubbles-arena">
+          <!-- Injected via JS -->
+        </div>
+
+        <div id="quiz-feedback" class="quiz-feedback-box"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="secondary-btn" onclick="closeAllModals()">إغلاق التحدي</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. APK Export & Installation Guide Modal -->
+  <div id="modal-apk" class="modal-overlay" onclick="closeModals(event)">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="title-with-icon">
+          <span>📱</span>
+          <h3>تصدير وتشغيل تطبيق القرآن (APK)</h3>
+        </div>
+        <button class="close-modal-btn" onclick="closeAllModals()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="apk-guide-intro">
+          <p>
+            تم إعداد بنية أندرويد الكاملة <strong>(AndroidManifest، build.gradle، MainActivity)</strong> وملف البناء التلقائي <strong>GitHub Actions</strong> في المشروع!
+          </p>
+        </div>
+
+        <div class="guide-step">
+          <div class="step-num">1</div>
+          <div class="step-info">
+            <strong>البناء المباشر عبر أمر Flutter (إذا كان متوفراً بجهازك):</strong>
+            <code>flutter build apk --release</code>
+            <p>سيتم توليد ملف APK مباشرة في مسار <code>build/app/outputs/flutter-apk/app-release.apk</code>.</p>
+          </div>
+        </div>
+
+        <div class="guide-step">
+          <div class="step-num">2</div>
+          <div class="step-info">
+            <strong>البناء السحابي التلقائي المجاني (CI/CD):</strong>
+            <p>تم تضمين مسار <code>.github/workflows/build_apk.yml</code>. بمجرد رفع المشروع إلى GitHub، تقوم خوادم GitHub ببناء ملف APK وتوفير رابط تحميل مباشر ومجاني!</p>
+          </div>
+        </div>
+
+        <div class="guide-step active-step">
+          <div class="step-num">3</div>
+          <div class="step-info">
+            <strong>التجربة الفورية الآن:</strong>
+            <p>يمكنك تجربة كامل خصائص التطبيق (الصوت المباشر من EveryAyah، التكرار N x M، شجرة القرآن، مسابقة الفقاعات، وتوزيع الصلوات) في هذا المحاكي التفاعلي مباشرة!</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="primary-btn" onclick="closeAllModals()">فهمت، شكراً لك</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio Element for EveryAyah CDN -->
+  <audio id="quran-audio" preload="auto"></audio>
+
+  <script src="app.js"></script>
+</body>
+</html>
