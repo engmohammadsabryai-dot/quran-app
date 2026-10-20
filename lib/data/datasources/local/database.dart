@@ -2,11 +2,11 @@ import 'dart:async';
 import 'package:drift/drift.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../domain/models/daily_task.dart';
-import '../../domain/models/memorization_plan.dart';
-import '../../domain/models/mutashabiha_item.dart';
-import '../../domain/models/parental_reward.dart';
-import '../../domain/models/user_profile.dart';
+import '../../../domain/models/daily_task.dart';
+import '../../../domain/models/memorization_plan.dart';
+import '../../../domain/models/mutashabiha_item.dart';
+import '../../../domain/models/parental_reward.dart';
+import '../../../domain/models/user_profile.dart';
 import 'seed_data.dart';
 
 // DRIFT TABLE DEFINITIONS

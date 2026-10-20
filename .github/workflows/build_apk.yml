@@ -41,12 +41,21 @@ jobs:
       - name: Run Unit Tests
         run: flutter test || true
 
+      - name: Setup Android Build Environment & Permissions
+        run: |
+          echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
+          chmod +x android/gradlew || true
+
       - name: Build Release APK
         run: flutter build apk --release
 
       - name: Prepare APK File for Distribution
         run: |
-          cp build/app/outputs/flutter-apk/app-release.apk quran-app-release.apk
+          if [ -f "build/app/outputs/flutter-apk/app-release.apk" ]; then
+            cp build/app/outputs/flutter-apk/app-release.apk quran-app-release.apk
+          else
+            find build/ -name "*.apk" -exec cp {} quran-app-release.apk \;
+          fi
           ls -lh quran-app-release.apk
 
       - name: Upload APK to GitHub Artifacts
