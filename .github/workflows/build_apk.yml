@@ -47,7 +47,20 @@ jobs:
           chmod +x android/gradlew || true
 
       - name: Build Release APK
-        run: flutter build apk --release -v
+        run: |
+          set -o pipefail
+          flutter build apk --release -v 2>&1 | tee build_log.txt
+
+      - name: Capture and Push Build Log on Failure
+        if: failure()
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git checkout -B debug-log
+          tail -n 250 build_log.txt > build_error_output.txt
+          git add build_error_output.txt
+          git commit -m "chore: capture build error log" || true
+          git push origin debug-log --force || true
 
       - name: Prepare APK File for Distribution
         run: |
