@@ -37,13 +37,6 @@ class QuranAudioHandler extends BaseAudioHandler with SeekHandler {
         displayTitle: 'سورة $surahName - الآية $ayahNumber',
         displaySubtitle: reciterName,
         displayDescription: 'تكرار الحفظ والورد القرآني',
-        controls: [
-          MediaControl.skipToPrevious,
-          MediaControl.play,
-          MediaControl.pause,
-          MediaControl.skipToNext,
-          MediaControl.stop,
-        ],
       ),
     );
   }
