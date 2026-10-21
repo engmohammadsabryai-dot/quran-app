@@ -67,9 +67,6 @@ class ReciterInfo {
   String getAyahAudioUrl(int surah, int ayah) {
     final surahPadded = surah.toString().padLeft(3, '0');
     final ayahPadded = ayah.toString().padLeft(3, '0');
-    if (directUrl != null) {
-      return '$directUrl$surahPadded.mp3';
-    }
     return 'https://everyayah.com/data/$cdnSubfolder/$surahPadded$ayahPadded.mp3';
   }
 

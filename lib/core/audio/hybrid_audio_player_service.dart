@@ -126,6 +126,7 @@ class HybridAudioPlayerService {
   StreamSubscription? _durationSubscription;
   Timer? _delayTimer;
   bool _isDisposed = false;
+  bool _isHandlingCompletion = false;
 
   HybridAudioPlayerService({
     AudioPlayer? player,
@@ -169,7 +170,10 @@ class HybridAudioPlayerService {
 
       // Handle ayah completion
       if (state.processingState == ProcessingState.completed) {
-        _handleAyahCompleted();
+        if (!_isHandlingCompletion) {
+          _isHandlingCompletion = true;
+          _handleAyahCompleted();
+        }
       }
     });
 
@@ -247,8 +251,43 @@ class HybridAudioPlayerService {
     }
   }
 
-  /// Cache-First Audio Resolution
+  /// Bundled assets fast-path for discrete ayah recordings (offline-ready, instant repetition)
+  String? _getBundledAssetPath(int surah, int ayah, String reciterId) {
+    if ((surah == 2 && ayah >= 1 && ayah <= 5) || (surah == 112 && ayah >= 1 && ayah <= 4)) {
+      if (reciterId == 'minshawi_teacher') {
+        return 'assets/audio/minshawi_teacher_${surah}_$ayah.wav';
+      } else if (reciterId.contains('husary')) {
+        return 'assets/audio/husary_${surah}_$ayah.wav';
+      } else if (reciterId == 'minshawi_murattal') {
+        return 'assets/audio/minshawi_${surah}_$ayah.wav';
+      } else if (reciterId.contains('ali_jaber')) {
+        return 'assets/audio/ali_jaber_${surah}_$ayah.wav';
+      } else if (reciterId.contains('sowaid')) {
+        return 'assets/audio/ayman_sowaid_${surah}_$ayah.wav';
+      } else if (reciterId.contains('azzawi')) {
+        return 'assets/audio/azzawi_${surah}_$ayah.wav';
+      } else if (reciterId.contains('banna')) {
+        return 'assets/audio/banna_${surah}_$ayah.wav';
+      } else if (reciterId.contains('hudhaif')) {
+        return 'assets/audio/hudhaifi_${surah}_$ayah.wav';
+      } else if (reciterId.contains('soufi')) {
+        return 'assets/audio/soufi_${surah}_$ayah.wav';
+      } else {
+        return 'assets/audio/${surah}_$ayah.wav';
+      }
+    }
+    return null;
+  }
+
+  /// Cache-First & Asset-First Audio Resolution
   Future<AudioSource> _resolveAudioSource(int surah, int ayah) async {
+    // 1. First priority: Bundled offline asset
+    final bundledAsset = _getBundledAssetPath(surah, ayah, _currentReciter.id);
+    if (bundledAsset != null) {
+      debugPrint('📦 Bundled Asset Hit: $bundledAsset');
+      return AudioSource.asset(bundledAsset);
+    }
+
     final surahPadded = surah.toString().padLeft(3, '0');
     final ayahPadded = ayah.toString().padLeft(3, '0');
     final remoteUrl = _currentReciter.getAyahAudioUrl(surah, ayah);
@@ -270,10 +309,9 @@ class HybridAudioPlayerService {
       }
 
       // Cache-Miss: Stream from EveryAyah CDN
-      debugPrint('🌐 Cache-Miss: Streaming remote URL for $surah:$ayah -> $remoteUrl');
+      debugPrint('🌐 Streaming remote URL for $surah:$ayah -> $remoteUrl');
 
       if (_autoDownloadEnabled) {
-        // Delegate background async download without blocking playback
         _triggerBackgroundDownload(remoteUrl, localFilePath);
       }
 
@@ -305,19 +343,25 @@ class HybridAudioPlayerService {
     final audioSource = await _resolveAudioSource(item.surahNumber, item.ayahNumber);
 
     try {
+      // Force stop and seek to 0 to ensure clean repetition state on Android
+      await _player.stop();
       try {
-        await _player.setAudioSource(audioSource);
+        await _player.setAudioSource(audioSource, initialPosition: Duration.zero);
+        await _player.seek(Duration.zero);
         await _player.play();
       } catch (e) {
-        debugPrint('⚠️ Error playing primary audio source: $e, attempting resilient fallback');
+        debugPrint('⚠️ Error playing primary audio source: $e, attempting fallback');
         try {
           final fallbackUrl = _currentReciter.getSurahAudioUrl(item.surahNumber);
           await _player.setAudioSource(AudioSource.uri(Uri.parse(fallbackUrl)));
+          await _player.seek(Duration.zero);
           await _player.play();
         } catch (err) {
           debugPrint('⚠️ Resilient fallback failed: $err');
         }
       }
+
+      _isHandlingCompletion = false;
 
       _audioHandler?.updateCurrentMediaItem(
         id: item.id,
@@ -336,47 +380,67 @@ class HybridAudioPlayerService {
         ),
       );
     } catch (e) {
+      _isHandlingCompletion = false;
       debugPrint('Error playing ayah ${item.surahNumber}:${item.ayahNumber}: $e');
     }
   }
 
-  /// Nested Loop Engine handler triggered upon Ayah completion
+  /// Unified Repetition Engine: N Ayah repeats x M Portion cycles with T silent delay
   void _handleAyahCompleted() {
     _delayTimer?.cancel();
 
-    // Check if Ayah repeat count (N) reached
+    // 1. Ayah Repetition (N)
     if (_currentAyahRepeatCount < _targetAyahRepeats) {
-      // Repeat the same Ayah again
       _currentAyahRepeatCount++;
-      _startIntervalDelayAndProceed(() {
-        _playCurrentAyah();
+      _updateState(
+        _progressSubject.value.copyWith(
+          currentAyahRepeatCount: _currentAyahRepeatCount,
+        ),
+      );
+      _startIntervalDelayAndProceed(() async {
+        await _playCurrentAyah();
       });
       return;
     }
 
-    // Ayah N repeats reached. Reset ayah repeat counter and advance to next Ayah
+    // 2. Ayah reached target N repeats -> Move to next Ayah within range
     _currentAyahRepeatCount = 1;
 
     if (_currentAyahIndex < _queue.length - 1) {
       _currentAyahIndex++;
-      _startIntervalDelayAndProceed(() {
-        _playCurrentAyah();
+      _updateState(
+        _progressSubject.value.copyWith(
+          currentAyahIndex: _currentAyahIndex,
+          currentAyahRepeatCount: _currentAyahRepeatCount,
+        ),
+      );
+      _startIntervalDelayAndProceed(() async {
+        await _playCurrentAyah();
       });
       return;
     }
 
-    // Full range completed! Check if portion loop (M) reached
+    // 3. Portion cycle (M)
     if (_currentPortionCycle < _targetPortionCycles) {
       _currentPortionCycle++;
       _currentAyahIndex = 0;
-      _startIntervalDelayAndProceed(() {
-        _playCurrentAyah();
+      _currentAyahRepeatCount = 1;
+      _updateState(
+        _progressSubject.value.copyWith(
+          currentPortionCycle: _currentPortionCycle,
+          currentAyahIndex: _currentAyahIndex,
+          currentAyahRepeatCount: _currentAyahRepeatCount,
+        ),
+      );
+      _startIntervalDelayAndProceed(() async {
+        await _playCurrentAyah();
       });
       return;
     }
 
-    // Full nested repetition completed!
+    // 4. All repetitions and portion cycles completed!
     _player.stop();
+    _isHandlingCompletion = false;
     _updateState(
       _progressSubject.value.copyWith(
         isPlaying: false,

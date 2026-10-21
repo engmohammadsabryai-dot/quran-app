@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../core/audio/hybrid_audio_player_service.dart';
+import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../domain/models/daily_task.dart';
 import '../../blocs/audio/audio_cubit.dart';
@@ -16,8 +18,11 @@ import '../profile/profile_switcher_sheet.dart';
 import 'widgets/analytics_dashboard_header.dart';
 import 'widgets/classical_tabular_tracker.dart';
 import 'widgets/delay_compensation_dialog.dart';
+import 'widgets/madani_mushaf_view_widget.dart';
 import 'widgets/mutashabiha_badge_and_modal.dart';
 import 'widgets/prayer_splitter_widget.dart';
+import 'widgets/quran_range_selector_widget.dart';
+import 'widgets/repetition_controller_card.dart';
 
 class AdultClassicalHomeView extends StatefulWidget {
   const AdultClassicalHomeView({super.key});
@@ -28,6 +33,21 @@ class AdultClassicalHomeView extends StatefulWidget {
 
 class _AdultClassicalHomeViewState extends State<AdultClassicalHomeView> {
   DailyTask? _selectedTaskOverride;
+  int _surahNumber = 2;
+  int _pageNumber = 2;
+  int _fromAyah = 1;
+  int _toAyah = 5;
+  String _memorizationSystem = 'page';
+  bool _initializedFromTask = false;
+
+  void _syncWithTask(DailyTask task) {
+    if (_initializedFromTask) return;
+    _initializedFromTask = true;
+    _surahNumber = task.surahNumber;
+    _fromAyah = task.fromAyah;
+    _toAyah = task.toAyah;
+    _pageNumber = (task.pageNumber != null && task.pageNumber! > 0) ? task.pageNumber! : 2;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +104,12 @@ class _AdultClassicalHomeViewState extends State<AdultClassicalHomeView> {
           }
 
           final activeTask = _selectedTaskOverride ?? planState.todayTask ?? planState.tasks.firstOrNull;
+          if (activeTask != null) {
+            _syncWithTask(activeTask);
+          }
+
           final mutashabihatList = context.watch<MutashabihatCubit>().state.items;
+          final surahInfo = AppConstants.getSurah(_surahNumber);
 
           return SafeArea(
             child: Stack(
@@ -94,7 +119,7 @@ class _AdultClassicalHomeViewState extends State<AdultClassicalHomeView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      // Plan Name Badge
+                      // Plan Name & Active Streak Badge
                       if (planState.activePlan != null)
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -152,7 +177,102 @@ class _AdultClassicalHomeViewState extends State<AdultClassicalHomeView> {
                         },
                       ),
 
-                      // Today's Active Portion Spotlight Card
+                      // 1. Surah and Ayah Range Selector (نظام وطريقة الحفظ وتحديد الآيات)
+                      QuranRangeSelectorWidget(
+                        selectedSurah: _surahNumber,
+                        selectedPage: _pageNumber,
+                        fromAyah: _fromAyah,
+                        toAyah: _toAyah,
+                        memorizationSystem: _memorizationSystem,
+                        onRangeChanged: ({
+                          required int surahNumber,
+                          required String surahArabicName,
+                          required int fromAyah,
+                          required int toAyah,
+                          required int pageNumber,
+                          required String system,
+                        }) {
+                          setState(() {
+                            _surahNumber = surahNumber;
+                            _pageNumber = pageNumber;
+                            _fromAyah = fromAyah;
+                            _toAyah = toAyah;
+                            _memorizationSystem = system;
+                          });
+                        },
+                      ),
+
+                      // 2. Full Madani Quran Page Display with Live Ayah Highlighting
+                      BlocBuilder<AudioCubit, PlaybackProgressState>(
+                        builder: (context, audioState) {
+                          final isCurrentSurahPlaying = audioState.currentItem?.surahNumber == _surahNumber;
+                          final activeAyah = isCurrentSurahPlaying ? audioState.currentItem?.ayahNumber : null;
+
+                          return MadaniMushafViewWidget(
+                            pageNumber: _pageNumber,
+                            surahNumber: _surahNumber,
+                            fromAyah: _fromAyah,
+                            toAyah: _toAyah,
+                            activePlayingAyah: activeAyah,
+                            onAyahTapped: (ayahNum) {
+                              context.read<AudioCubit>().playAyahRange(
+                                    surahNumber: _surahNumber,
+                                    surahArabicName: surahInfo.nameArabic,
+                                    fromAyah: _fromAyah,
+                                    toAyah: _toAyah,
+                                    startAyah: ayahNum,
+                                    autoPlay: true,
+                                  );
+                            },
+                          );
+                        },
+                      ),
+
+                      // 3. Audio & Repetition Controller Card (N x M x T Repetition Engine)
+                      BlocBuilder<AudioCubit, PlaybackProgressState>(
+                        builder: (context, audioState) {
+                          return RepetitionControllerCard(
+                            audioState: audioState,
+                            surahNumber: _surahNumber,
+                            surahArabicName: surahInfo.nameArabic,
+                            fromAyah: _fromAyah,
+                            toAyah: _toAyah,
+                            onPlayRange: () {
+                              context.read<AudioCubit>().playAyahRange(
+                                    surahNumber: _surahNumber,
+                                    surahArabicName: surahInfo.nameArabic,
+                                    fromAyah: _fromAyah,
+                                    toAyah: _toAyah,
+                                    startAyah: _fromAyah,
+                                    autoPlay: true,
+                                  );
+                            },
+                            onTogglePlayPause: () {
+                              context.read<AudioCubit>().togglePlayPause();
+                            },
+                            onSkipNext: () {
+                              context.read<AudioCubit>().skipNext();
+                            },
+                            onSkipPrevious: () {
+                              context.read<AudioCubit>().skipPrevious();
+                            },
+                            onSetAyahRepeats: (n) {
+                              context.read<AudioCubit>().setRepetitionSettings(ayahRepeats: n);
+                            },
+                            onSetPortionCycles: (m) {
+                              context.read<AudioCubit>().setRepetitionSettings(portionCycles: m);
+                            },
+                            onSetIntervalDelay: (t) {
+                              context.read<AudioCubit>().setRepetitionSettings(intervalDelay: t);
+                            },
+                            onReciterChanged: (reciter) {
+                              context.read<AudioCubit>().setRepetitionSettings(reciter: reciter);
+                            },
+                          );
+                        },
+                      ),
+
+                      // 4. Today's Active Portion Spotlight Card (if present)
                       if (activeTask != null) ...[
                         _buildTodayPortionSpotlight(context, activeTask, mutashabihatList),
                         const SizedBox(height: 12),
@@ -175,14 +295,27 @@ class _AdultClassicalHomeViewState extends State<AdultClassicalHomeView> {
 
                       const SizedBox(height: 14),
 
-                      // Classical Tabular Tracker
+                      // 5. Classical Tabular Tracker
                       ClassicalTabularTracker(
                         tasks: planState.tasks,
                         mutashabihatList: mutashabihatList,
                         onSelectTask: (task) {
-                          setState(() => _selectedTaskOverride = task);
+                          setState(() {
+                            _selectedTaskOverride = task;
+                            _surahNumber = task.surahNumber;
+                            _fromAyah = task.fromAyah;
+                            _toAyah = task.toAyah;
+                            _pageNumber = (task.pageNumber != null && task.pageNumber! > 0) ? task.pageNumber! : 2;
+                          });
                         },
                         onPlayTask: (task) {
+                          setState(() {
+                            _selectedTaskOverride = task;
+                            _surahNumber = task.surahNumber;
+                            _fromAyah = task.fromAyah;
+                            _toAyah = task.toAyah;
+                            _pageNumber = (task.pageNumber != null && task.pageNumber! > 0) ? task.pageNumber! : 2;
+                          });
                           context.read<AudioCubit>().playTask(task);
                         },
                         onToggleComplete: (task) {
@@ -299,15 +432,22 @@ class _AdultClassicalHomeViewState extends State<AdultClassicalHomeView> {
           // Play Audio Button
           ElevatedButton.icon(
             onPressed: () {
+              setState(() {
+                _surahNumber = task.surahNumber;
+                _fromAyah = task.fromAyah;
+                _toAyah = task.toAyah;
+                _pageNumber = (task.pageNumber != null && task.pageNumber! > 0) ? task.pageNumber! : 2;
+              });
               context.read<AudioCubit>().playTask(task);
             },
             icon: const Icon(Icons.play_circle_fill_rounded, size: 22),
             label: Text(
-              'تشغيل التكرار والاستماع المتقن',
+              'تفعيل وتلاوة ورد اليوم',
               style: GoogleFonts.cairo(fontSize: 14.5, fontWeight: FontWeight.bold),
             ),
             style: ElevatedButton.styleFrom(
               backgroundColor: AdultColors.primaryGreen,
+              foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 12),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),
