@@ -4,8 +4,7 @@
 GeneratedPluginRegistrant.java
 .cxx/
 
-# Remember to never publicly share your keystore.
-# See https://flutter.dev/to/reference-keystore
-key.properties
-**/*.keystore
-**/*.jks
+# Release keystore for GitHub Actions CI/CD release signing
+!key.properties
+!quran_app_release.jks
+
