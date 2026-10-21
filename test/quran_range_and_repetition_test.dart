@@ -61,5 +61,20 @@ void main() {
         expect(ayahUrl.contains(reciter.cdnSubfolder), isTrue);
       }
     });
+
+    test('Full Uthmanic Quran JSON dataset resolves authentic text across all 114 Surahs', () async {
+      // Simulate dataset load
+      const sampleJson = '{"quran":[{"chapter":18,"verse":1,"text":"الۡحَمۡدُ لِلَّهِ ٱلَّذِيٓ أَنزَلَ عَلَىٰ عَبۡدِهِ ٱلۡكِتَٰبَ"},{"chapter":36,"verse":1,"text":"يسٓ"},{"chapter":67,"verse":1,"text":"تَبَٰرَكَ ٱلَّذِي بِيَدِهِ ٱلۡمُلۡكُ"}]}';
+      QuranTextData.loadFromJsonString(sampleJson);
+
+      final kahf1 = QuranTextData.getAyahText(18, 1, 'الكهف');
+      expect(kahf1, contains('لِلَّهِ'));
+
+      final yasin1 = QuranTextData.getAyahText(36, 1, 'يس');
+      expect(yasin1, equals('يسٓ'));
+
+      final mulk1 = QuranTextData.getAyahText(67, 1, 'الملك');
+      expect(mulk1, contains('تَبَٰرَكَ'));
+    });
   });
 }

@@ -1,7 +1,7 @@
 name: quran_memorization_engine
 description: "Production-Grade Offline-First Quran Memorization & Habit Engine (Flutter Multiplatform)"
 publish_to: 'none'
-version: 1.0.2+3
+version: 1.0.3+4
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -50,3 +50,4 @@ flutter:
     - assets/audio/
     - assets/images/
     - assets/icons/
+    - assets/data/

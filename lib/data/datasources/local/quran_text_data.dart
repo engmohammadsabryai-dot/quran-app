@@ -1,5 +1,7 @@
-// Authentic Uthmanic Quran Text & Madani Mushaf Page Database
-// Includes 114 Surahs metadata, 604 Madani page mappings, and authentic Uthmanic verses
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import '../../../core/constants/app_constants.dart';
 
 class MadaniPageInfo {
   final int pageNumber;
@@ -24,6 +26,38 @@ class MadaniPageInfo {
 }
 
 class QuranTextData {
+  static final Map<String, String> _allVerses = {};
+  static bool _isInitialized = false;
+
+  /// Loads complete 6,236 Uthmanic verses of all 114 Surahs from bundled asset
+  static Future<void> initialize() async {
+    if (_isInitialized && _allVerses.isNotEmpty) return;
+    try {
+      final jsonStr = await rootBundle.loadString('assets/data/ara-quranuthmanihaf.min.json');
+      loadFromJsonString(jsonStr);
+    } catch (e) {
+      debugPrint('⚠️ Error loading full Quran Uthmanic JSON: $e');
+    }
+  }
+
+  /// Populate verse map synchronously from decoded JSON string
+  static void loadFromJsonString(String jsonStr) {
+    try {
+      final data = jsonDecode(jsonStr) as Map<String, dynamic>;
+      final list = data['quran'] as List;
+      for (final item in list) {
+        final chapter = item['chapter'];
+        final verse = item['verse'];
+        final text = item['text'] as String;
+        _allVerses['${chapter}_$verse'] = text;
+      }
+      _isInitialized = true;
+      debugPrint('📖 Loaded ${_allVerses.length} authentic Uthmanic verses successfully');
+    } catch (e) {
+      debugPrint('⚠️ Error parsing Quran JSON: $e');
+    }
+  }
+
   // Convert Western numbers to Arabic-Indic digits (١, ٢, ٣...)
   static String toArabicDigits(int number) {
     const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
@@ -211,25 +245,36 @@ class QuranTextData {
     if (madaniPages.containsKey(page)) {
       return madaniPages[page]!;
     }
-    final estimatedJuz = (page / 20.13).ceil().clamp(1, 30);
-    final estimatedHizb = (page / 10.06).ceil().clamp(1, 60);
-    final estimatedRub = (page / 2.51).ceil().clamp(1, 240);
+    SurahInfo surah = AppConstants.quranSurahs.first;
+    for (final s in AppConstants.quranSurahs) {
+      if (s.startPage <= page) {
+        surah = s;
+      } else {
+        break;
+      }
+    }
+    final estimatedJuz = surah.juzNumber > 0 ? surah.juzNumber : (page / 20.13).ceil().clamp(1, 30);
+    final estimatedHizb = ((estimatedJuz - 1) * 2 + ((page % 20) > 10 ? 2 : 1)).clamp(1, 60);
+    final estimatedRub = ((estimatedHizb - 1) * 4 + 1).clamp(1, 240);
 
     return MadaniPageInfo(
       pageNumber: page,
-      surahNumber: 2,
-      surahArabicName: 'البَقَرَة',
+      surahNumber: surah.number,
+      surahArabicName: surah.nameArabic,
       startAyah: 1,
-      endAyah: 5,
+      endAyah: surah.totalAyahs,
       juzNumber: estimatedJuz,
       hizbNumber: estimatedHizb,
       rubNumber: estimatedRub,
     );
   }
 
-  // Get verse text with graceful fallback
+  // Get authentic verse text with complete Uthmanic dataset integration
   static String getAyahText(int surahNumber, int ayahNumber, [String surahName = '']) {
     final key = '${surahNumber}_$ayahNumber';
+    if (_allVerses.containsKey(key)) {
+      return _allVerses[key]!;
+    }
     if (uthmanicVerses.containsKey(key)) {
       return uthmanicVerses[key]!;
     }

@@ -25,15 +25,18 @@ class MadaniMushafViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pageInfo = QuranTextData.getPageInfo(pageNumber);
     final surahInfo = AppConstants.getSurah(surahNumber);
-    final juzOrdinal = QuranTextData.arabicOrdinalWords[pageInfo.juzNumber] ?? QuranTextData.toArabicDigits(pageInfo.juzNumber);
-    final hizbOrdinal = QuranTextData.arabicOrdinalWords[pageInfo.hizbNumber] ?? QuranTextData.toArabicDigits(pageInfo.hizbNumber);
+    final currentPageNum = pageNumber > 0 ? pageNumber : surahInfo.startPage;
+    final currentJuz = surahInfo.juzNumber > 0 ? surahInfo.juzNumber : 1;
+    final juzOrdinal = QuranTextData.arabicOrdinalWords[currentJuz] ?? QuranTextData.toArabicDigits(currentJuz);
+    final currentHizb = ((currentJuz - 1) * 2 + (currentPageNum % 20 > 10 ? 2 : 1)).clamp(1, 60);
+    final hizbOrdinal = QuranTextData.arabicOrdinalWords[currentHizb] ?? QuranTextData.toArabicDigits(currentHizb);
 
-    // Compute which verses to render on this page view
-    // If the selected range is within this page, show them, or show the full page verses
-    final startAyah = pageInfo.startAyah;
-    final endAyah = pageInfo.endAyah.clamp(startAyah, surahInfo.totalAyahs);
+    // Compute which verses to render on this view:
+    // Strictly respect the user-selected fromAyah and toAyah for the current Surah
+    final startAyah = fromAyah.clamp(1, surahInfo.totalAyahs);
+    final endAyah = toAyah.clamp(startAyah, surahInfo.totalAyahs);
+    final showBasmalah = (surahNumber != 9) && (startAyah == 1) && (surahNumber != 1);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -137,7 +140,7 @@ class MadaniMushafViewWidget extends StatelessWidget {
                 ),
 
                 // Sacred Basmalah Header (Strictly unnumbered, except Al-Fatihah, hidden for At-Tawbah)
-                if (surahNumber != 9) ...[
+                if (showBasmalah) ...[
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 6),
                     child: Column(
@@ -153,9 +156,7 @@ class MadaniMushafViewWidget extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          surahNumber == 1
-                              ? '(آية رقم ١ في سورة الفاتحة)'
-                              : '(فصل استفتاح وتبرك • ليست آية معدودة في سورة ${surahInfo.nameArabic})',
+                          '(فصل استفتاح وتبرك • ليست آية معدودة في سورة ${surahInfo.nameArabic})',
                           style: GoogleFonts.cairo(
                             fontSize: 9.5,
                             fontWeight: FontWeight.w600,
@@ -260,9 +261,9 @@ class MadaniMushafViewWidget extends StatelessWidget {
                   border: Border.all(color: AdultColors.goldAccent.withOpacity(0.5)),
                 ),
                 child: Text(
-                  '﴿ ${QuranTextData.toArabicDigits(pageNumber)} ﴾',
+                  '﴿ ص ${QuranTextData.toArabicDigits(currentPageNum)} • الآيات ${QuranTextData.toArabicDigits(startAyah)} - ${QuranTextData.toArabicDigits(endAyah)} ﴾',
                   style: GoogleFonts.amiri(
-                    fontSize: 15,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: AdultColors.primaryGreen,
                   ),

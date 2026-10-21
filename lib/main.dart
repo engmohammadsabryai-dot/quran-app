@@ -7,6 +7,7 @@ import 'core/audio/quran_audio_handler.dart';
 import 'core/network/dio_client.dart';
 import 'core/theme/app_theme.dart';
 import 'data/datasources/local/database.dart';
+import 'data/datasources/local/quran_text_data.dart';
 import 'data/datasources/secure/secure_storage_service.dart';
 import 'data/repositories/mutashabihat_repository_impl.dart';
 import 'data/repositories/parental_reward_repository_impl.dart';
@@ -23,6 +24,9 @@ import 'presentation/views/adaptive_home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // 0. Initialize Full Uthmanic Quran Dataset (6,236 Verses)
+  await QuranTextData.initialize();
 
   // 1. Core Services Setup
   final networkClient = NetworkClient();

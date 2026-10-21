@@ -174,6 +174,9 @@ class HybridAudioPlayerService {
           _isHandlingCompletion = true;
           _handleAyahCompleted();
         }
+      } else if (state.processingState == ProcessingState.ready ||
+          state.processingState == ProcessingState.buffering) {
+        _isHandlingCompletion = false;
       }
     });
 
@@ -251,43 +254,8 @@ class HybridAudioPlayerService {
     }
   }
 
-  /// Bundled assets fast-path for discrete ayah recordings (offline-ready, instant repetition)
-  String? _getBundledAssetPath(int surah, int ayah, String reciterId) {
-    if ((surah == 2 && ayah >= 1 && ayah <= 5) || (surah == 112 && ayah >= 1 && ayah <= 4)) {
-      if (reciterId == 'minshawi_teacher') {
-        return 'assets/audio/minshawi_teacher_${surah}_$ayah.wav';
-      } else if (reciterId.contains('husary')) {
-        return 'assets/audio/husary_${surah}_$ayah.wav';
-      } else if (reciterId == 'minshawi_murattal') {
-        return 'assets/audio/minshawi_${surah}_$ayah.wav';
-      } else if (reciterId.contains('ali_jaber')) {
-        return 'assets/audio/ali_jaber_${surah}_$ayah.wav';
-      } else if (reciterId.contains('sowaid')) {
-        return 'assets/audio/ayman_sowaid_${surah}_$ayah.wav';
-      } else if (reciterId.contains('azzawi')) {
-        return 'assets/audio/azzawi_${surah}_$ayah.wav';
-      } else if (reciterId.contains('banna')) {
-        return 'assets/audio/banna_${surah}_$ayah.wav';
-      } else if (reciterId.contains('hudhaif')) {
-        return 'assets/audio/hudhaifi_${surah}_$ayah.wav';
-      } else if (reciterId.contains('soufi')) {
-        return 'assets/audio/soufi_${surah}_$ayah.wav';
-      } else {
-        return 'assets/audio/${surah}_$ayah.wav';
-      }
-    }
-    return null;
-  }
-
-  /// Cache-First & Asset-First Audio Resolution
+  /// Cache-First & CDN Resilient Audio Resolution
   Future<AudioSource> _resolveAudioSource(int surah, int ayah) async {
-    // 1. First priority: Bundled offline asset
-    final bundledAsset = _getBundledAssetPath(surah, ayah, _currentReciter.id);
-    if (bundledAsset != null) {
-      debugPrint('📦 Bundled Asset Hit: $bundledAsset');
-      return AudioSource.asset(bundledAsset);
-    }
-
     final surahPadded = surah.toString().padLeft(3, '0');
     final ayahPadded = ayah.toString().padLeft(3, '0');
     final remoteUrl = _currentReciter.getAyahAudioUrl(surah, ayah);
@@ -340,9 +308,28 @@ class HybridAudioPlayerService {
     if (_queue.isEmpty || _currentAyahIndex >= _queue.length) return;
 
     final item = _queue[_currentAyahIndex];
-    final audioSource = await _resolveAudioSource(item.surahNumber, item.ayahNumber);
+
+    // 1. Immediately update UI progress and lock in matching Ayah metadata
+    _updateState(
+      _progressSubject.value.copyWith(
+        currentItem: item,
+        currentAyahIndex: _currentAyahIndex,
+        currentAyahRepeatCount: _currentAyahRepeatCount,
+        currentPortionCycle: _currentPortionCycle,
+        isInIntervalDelay: false,
+      ),
+    );
+
+    _audioHandler?.updateCurrentMediaItem(
+      id: item.id,
+      surahName: item.surahArabicName,
+      ayahNumber: item.ayahNumber,
+      reciterName: _currentReciter.nameArabic,
+    );
 
     try {
+      final audioSource = await _resolveAudioSource(item.surahNumber, item.ayahNumber);
+
       // Force stop and seek to 0 to ensure clean repetition state on Android
       await _player.stop();
       try {
@@ -350,37 +337,18 @@ class HybridAudioPlayerService {
         await _player.seek(Duration.zero);
         await _player.play();
       } catch (e) {
-        debugPrint('⚠️ Error playing primary audio source: $e, attempting fallback');
+        debugPrint('⚠️ Error playing primary audio source: $e, attempting direct CDN retry');
         try {
-          final fallbackUrl = _currentReciter.getSurahAudioUrl(item.surahNumber);
-          await _player.setAudioSource(AudioSource.uri(Uri.parse(fallbackUrl)));
+          final directUrl = _currentReciter.getAyahAudioUrl(item.surahNumber, item.ayahNumber);
+          await _player.stop();
+          await _player.setAudioSource(AudioSource.uri(Uri.parse(directUrl)), initialPosition: Duration.zero);
           await _player.seek(Duration.zero);
           await _player.play();
         } catch (err) {
-          debugPrint('⚠️ Resilient fallback failed: $err');
+          debugPrint('⚠️ Direct CDN retry failed: $err');
         }
       }
-
-      _isHandlingCompletion = false;
-
-      _audioHandler?.updateCurrentMediaItem(
-        id: item.id,
-        surahName: item.surahArabicName,
-        ayahNumber: item.ayahNumber,
-        reciterName: _currentReciter.nameArabic,
-      );
-
-      _updateState(
-        _progressSubject.value.copyWith(
-          currentItem: item,
-          currentAyahIndex: _currentAyahIndex,
-          currentAyahRepeatCount: _currentAyahRepeatCount,
-          currentPortionCycle: _currentPortionCycle,
-          isInIntervalDelay: false,
-        ),
-      );
     } catch (e) {
-      _isHandlingCompletion = false;
       debugPrint('Error playing ayah ${item.surahNumber}:${item.ayahNumber}: $e');
     }
   }
