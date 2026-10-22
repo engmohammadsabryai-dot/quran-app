@@ -25,7 +25,8 @@ import 'widgets/quran_range_selector_widget.dart';
 import 'widgets/repetition_controller_card.dart';
 
 class AdultClassicalHomeView extends StatefulWidget {
-  const AdultClassicalHomeView({super.key});
+  final VoidCallback? onSwitchProfile;
+  const AdultClassicalHomeView({super.key, this.onSwitchProfile});
 
   @override
   State<AdultClassicalHomeView> createState() => _AdultClassicalHomeViewState();
@@ -63,7 +64,13 @@ class _AdultClassicalHomeViewState extends State<AdultClassicalHomeView> {
             builder: (context, profState) {
               final active = profState.activeProfile;
               return TextButton.icon(
-                onPressed: () => ProfileSwitcherSheet.show(context),
+                onPressed: () {
+                  if (widget.onSwitchProfile != null) {
+                    widget.onSwitchProfile!();
+                  } else {
+                    ProfileSwitcherSheet.show(context);
+                  }
+                },
                 icon: const CircleAvatar(
                   radius: 14,
                   backgroundColor: AdultColors.primaryGreen,

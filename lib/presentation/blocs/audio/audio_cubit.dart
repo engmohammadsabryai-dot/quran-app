@@ -61,6 +61,7 @@ class AudioCubit extends Cubit<PlaybackProgressState> {
   Future<void> togglePlayPause() => _audioService.togglePlayPause();
   Future<void> play() => _audioService.play();
   Future<void> pause() => _audioService.pause();
+  Future<void> stop() => _audioService.stop();
   Future<void> skipNext() => _audioService.skipNext();
   Future<void> skipPrevious() => _audioService.skipPrevious();
   Future<void> seekToAyahIndex(int index) => _audioService.seekToAyahIndex(index);

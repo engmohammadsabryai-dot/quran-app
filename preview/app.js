@@ -296,6 +296,7 @@ window.addEventListener('DOMContentLoaded', () => {
   setupAudioListeners();
   populateRecitersDropdown('hafs');
   updatePlayerUI();
+  initWelcomeSetup();
 });
 
 // Dual Theme Switcher
@@ -2178,29 +2179,95 @@ function onManualRangeChange() {
   toInput.value = toVal;
 }
 
-// Apply Custom Range Button Handler
-function applyCustomRange() {
+// Apply Custom Range & Memorization Settings Button Handler (زر تطبيق)
+function applyCustomRange(isFromApplyButton = false) {
   onManualRangeChange();
   const fromInput = document.getElementById('input-range-from');
   const toInput = document.getElementById('input-range-to');
 
-  rangeStartAyah = parseInt(fromInput.value, 10);
-  rangeEndAyah = parseInt(toInput.value, 10);
+  if (fromInput) rangeStartAyah = parseInt(fromInput.value, 10);
+  if (toInput) rangeEndAyah = parseInt(toInput.value, 10);
 
-  if (currentAyah < rangeStartAyah || currentAyah > rangeEndAyah) {
-    currentAyah = rangeStartAyah;
-    currentAyahRepeat = 1;
+  // Sync Riwayah and Reciter if changed in dropdowns
+  const riwayahSel = document.getElementById('riwayah-select');
+  if (riwayahSel && riwayahSel.value !== currentRiwayah) {
+    currentRiwayah = riwayahSel.value;
   }
+  const reciterSel = document.getElementById('reciter-select');
+  if (reciterSel && reciterSel.value) {
+    const activeRec = recitersDatabase.find(r => r.id === reciterSel.value || r.subfolder === reciterSel.value);
+    if (activeRec) {
+      currentReciterId = activeRec.id;
+      currentReciterSubfolder = activeRec.subfolder;
+      currentReciterName = activeRec.name;
+    }
+  }
+
+  // Reset counters to range start
+  currentAyah = rangeStartAyah;
+  currentAyahRepeat = 1;
+  currentRangeCycle = 1;
 
   document.querySelectorAll('.range-chip').forEach(c => c.classList.remove('active'));
 
   updateRangeInputsUI();
   highlightActiveAyahInMushaf();
   updatePlayerUI();
-  showToast(`✅ تم تطبيق النطاق المخصص: الآيات (${toArabicDigits(rangeStartAyah)} - ${toArabicDigits(rangeEndAyah)})`);
+
+  if (isFromApplyButton) {
+    showToast(`✅ تم تطبيق خيارات الحفظ بنجاح وتحديث المشغل والقراءة لحظياً! (${currentReciterName} • الآيات ${toArabicDigits(rangeStartAyah)} - ${toArabicDigits(rangeEndAyah)})`);
+  } else {
+    showToast(`✅ تم تطبيق النطاق: الآيات (${toArabicDigits(rangeStartAyah)} - ${toArabicDigits(rangeEndAyah)})`);
+  }
+
+  // Real-time reactive audio update: if playing, re-trigger immediately
   if (isPlaying) {
     playCurrentAyah();
   }
+}
+
+// 2. زر تشغيل التلاوة (Play)
+function playCurrentMemorizationRange() {
+  applyCustomRange(false);
+  isPlaying = true;
+  playCurrentAyah();
+  showToast(`▶ جاري تشغيل تلاوة النطاق: ${getCurrentSurahName()} (${toArabicDigits(rangeStartAyah)} - ${toArabicDigits(rangeEndAyah)}) بصوت ${currentReciterName}`);
+}
+
+// 3. زر إيقاف مؤقت (Pause)
+function pauseCurrentMemorizationAudio() {
+  if (delayCountdownTimer) {
+    clearInterval(delayCountdownTimer);
+    delayCountdownTimer = null;
+  }
+  isTransitioning = false;
+  isPlaying = false;
+  audioElement.pause();
+  updatePlayerUI();
+  showToast('⏸️ تم إيقاف التلاوة مؤقتاً');
+}
+
+// 4. زر إيقاف (Stop)
+function stopCurrentMemorizationAudio() {
+  if (delayCountdownTimer) {
+    clearInterval(delayCountdownTimer);
+    delayCountdownTimer = null;
+  }
+  isTransitioning = false;
+  isPlaying = false;
+  audioElement.pause();
+  try {
+    audioElement.currentTime = 0;
+  } catch (e) {}
+
+  // Reset to range start
+  currentAyah = rangeStartAyah;
+  currentAyahRepeat = 1;
+  currentRangeCycle = 1;
+
+  highlightActiveAyahInMushaf();
+  updatePlayerUI();
+  showToast('⏹️ تم إيقاف التلاوة وإعادة المؤشر لبداية النطاق المحدد');
 }
 
 // Update Inputs and Indicator UI
@@ -2230,3 +2297,171 @@ function updateRangeInputsUI() {
     chipPage.textContent = `كامل الصفحة (${toArabicDigits(pInfo.startAyah)} - ${toArabicDigits(pInfo.endAyah)})`;
   }
 }
+
+// =========================================================================
+// INITIAL USER WELCOME WINDOW & SURAH AL-HIJR AYAH 9 AUDIO LOGIC
+// =========================================================================
+let currentUserName = 'طالب القرآن';
+let currentUserAge = 25;
+let introAudioPlaying = false;
+
+function initWelcomeSetup() {
+  const modal = document.getElementById('modal-welcome-setup');
+  const introAudio = document.getElementById('intro-verse-audio');
+  const eqVisualizer = document.getElementById('eq-visualizer');
+  const btnToggle = document.getElementById('btn-intro-audio-toggle');
+  const iconSpan = document.getElementById('intro-audio-icon');
+  const statusSpan = document.getElementById('intro-audio-status');
+
+  if (!modal) return;
+
+  // Open the welcome modal on initial app load
+  modal.classList.add('open');
+
+  // Setup intro audio event listeners
+  if (introAudio) {
+    introAudio.onplay = () => {
+      introAudioPlaying = true;
+      if (eqVisualizer) eqVisualizer.classList.add('active');
+      if (iconSpan) iconSpan.textContent = '⏸';
+      if (statusSpan) statusSpan.textContent = 'جاري الاستماع للتلاوة المباركة...';
+    };
+
+    introAudio.onpause = () => {
+      introAudioPlaying = false;
+      if (eqVisualizer) eqVisualizer.classList.remove('active');
+      if (iconSpan) iconSpan.textContent = '▶';
+      if (statusSpan) statusSpan.textContent = 'استمع لتلاوة الآية الكريمة';
+    };
+
+    introAudio.onended = () => {
+      introAudioPlaying = false;
+      if (eqVisualizer) eqVisualizer.classList.remove('active');
+      if (iconSpan) iconSpan.textContent = '🔁';
+      if (statusSpan) statusSpan.textContent = 'إعادة تلاوة الآية الكريمة';
+    };
+
+    // Attempt autoplay of Surah Al-Hijr Ayah 9 (Sheikh Mahmoud Khalil Al-Husary)
+    const playPromise = introAudio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Autoplay blocked by browser policy: prompt user to click
+        if (iconSpan) iconSpan.textContent = '▶';
+        if (statusSpan) statusSpan.textContent = 'اضغط هنا للاستماع لتلاوة الآية الكريمة';
+      });
+    }
+  }
+
+  // Set default initial age routing badge
+  onWelcomeAgeInput();
+}
+
+// Toggle Intro Recitation (Ayah 9 Al-Hijr)
+function toggleIntroAudio() {
+  const introAudio = document.getElementById('intro-verse-audio');
+  if (!introAudio) return;
+
+  if (introAudio.paused) {
+    introAudio.play().catch(() => {});
+  } else {
+    introAudio.pause();
+  }
+}
+
+// Live Age input handler: routes dynamically to Kids (< 15) vs Adult (>= 15)
+function onWelcomeAgeInput() {
+  const ageInput = document.getElementById('welcome-user-age');
+  const badge = document.getElementById('mode-routing-badge');
+  const icon = document.getElementById('routing-icon');
+  const title = document.getElementById('routing-title');
+  const desc = document.getElementById('routing-desc');
+
+  if (!ageInput || !badge) return;
+
+  const ageVal = parseInt(ageInput.value, 10);
+  const isChild = !isNaN(ageVal) && ageVal < 15;
+
+  if (isChild) {
+    badge.className = 'mode-routing-badge kids';
+    if (icon) icon.textContent = '🌸';
+    if (title) title.textContent = `بناءً على السن (${toArabicDigits(ageVal)} سنة): سيتم توجيهك إلى واجهة الأطفال`;
+    if (desc) desc.textContent = 'بستان القرآن وشجرة الإنجاز، المصحف المعلم مع ترديد الأطفال، وتحدي فرقعة الفقاعات الممتع.';
+  } else {
+    badge.className = 'mode-routing-badge adult';
+    if (icon) icon.textContent = '📜';
+    const displayAge = isNaN(ageVal) ? '١٥+' : toArabicDigits(ageVal);
+    if (title) title.textContent = `بناءً على السن (${displayAge} سنة): سيتم توجيهك إلى واجهة الكبار`;
+    if (desc) desc.textContent = 'نظام الحفظ المتقن الكلاسيكي بالأرباع أو الصفحات، الجدولة لـ 280 يوماً، ومصحف الصلوات الخمس.';
+  }
+}
+
+// Confirm Welcome Setup & Transition to designated mode
+function confirmWelcomeSetup() {
+  const nameInput = document.getElementById('welcome-user-name');
+  const ageInput = document.getElementById('welcome-user-age');
+  const introAudio = document.getElementById('intro-verse-audio');
+  const modal = document.getElementById('modal-welcome-setup');
+
+  // Stop intro verse recitation
+  if (introAudio) {
+    introAudio.pause();
+    try { introAudio.currentTime = 0; } catch (e) {}
+  }
+
+  // Read User Profile data
+  if (nameInput && nameInput.value.trim()) {
+    currentUserName = nameInput.value.trim();
+  } else {
+    currentUserName = 'طالب القرآن';
+  }
+
+  const parsedAge = parseInt(ageInput ? ageInput.value : '25', 10);
+  currentUserAge = isNaN(parsedAge) ? 25 : parsedAge;
+
+  // Update header profile button
+  const headerName = document.getElementById('header-user-name');
+  const headerAvatar = document.getElementById('header-user-avatar');
+  if (headerName) headerName.textContent = currentUserName;
+
+  // Close welcome modal
+  if (modal) modal.classList.remove('open');
+
+  // Route to Kids vs Adult Mode based on age
+  if (currentUserAge < 15) {
+    if (headerAvatar) headerAvatar.textContent = '👦';
+    currentChildName = currentUserName;
+    const customKidInput = document.getElementById('custom-child-name-input');
+    if (customKidInput) customKidInput.value = currentUserName;
+    const mascotName = document.getElementById('mascot-name');
+    if (mascotName) mascotName.textContent = `صديق البطل ${currentUserName}`;
+
+    switchTheme('kids');
+    showToast(`🌸 أهلاً بك يا بطل القرآن (${currentUserName}) في بستان الإنجاز! ✨`);
+  } else {
+    if (headerAvatar) headerAvatar.textContent = '👤';
+    switchTheme('adult');
+    showToast(`📖 مرحباً بك يا ${currentUserName}! تم توجيهك إلى واجهة الحفظ المتقن والجدولة الكلاسيكية`);
+  }
+}
+
+// Open Welcome Modal anytime from header
+function openWelcomeModal(isManual = false) {
+  const modal = document.getElementById('modal-welcome-setup');
+  const nameInput = document.getElementById('welcome-user-name');
+  const ageInput = document.getElementById('welcome-user-age');
+  const introAudio = document.getElementById('intro-verse-audio');
+
+  if (nameInput) nameInput.value = currentUserName;
+  if (ageInput) ageInput.value = currentUserAge;
+  onWelcomeAgeInput();
+
+  if (modal) modal.classList.add('open');
+
+  if (introAudio) {
+    try {
+      introAudio.currentTime = 0;
+      introAudio.play().catch(() => {});
+    } catch (e) {}
+  }
+}
+

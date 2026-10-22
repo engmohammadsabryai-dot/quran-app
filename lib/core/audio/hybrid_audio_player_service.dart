@@ -268,6 +268,10 @@ class HybridAudioPlayerService {
   }
 
   String? _resolveBundledAssetPath(String reciterId, int surah, int ayah) {
+    if (surah == 15 && ayah == 9) {
+      return 'assets/audio/husary_15_9.mp3';
+    }
+
     final isSurah2 = (surah == 2 && ayah >= 1 && ayah <= 5);
     final isSurah112 = (surah == 112 && ayah >= 1 && ayah <= 4);
     if (!isSurah2 && !isSurah112) {
@@ -533,6 +537,27 @@ class HybridAudioPlayerService {
     _delayTimer?.cancel();
     _updateState(_progressSubject.value.copyWith(isInIntervalDelay: false));
     await _player.pause();
+  }
+
+  Future<void> stop() async {
+    _delayTimer?.cancel();
+    await _player.stop();
+    await _player.seek(Duration.zero);
+    _currentAyahIndex = 0;
+    _currentAyahRepeatCount = 1;
+    _currentPortionCycle = 1;
+    _isHandlingCompletion = false;
+    _updateState(
+      _progressSubject.value.copyWith(
+        isPlaying: false,
+        isInIntervalDelay: false,
+        position: Duration.zero,
+        currentAyahIndex: 0,
+        currentAyahRepeatCount: 1,
+        currentPortionCycle: 1,
+        currentItem: _queue.isNotEmpty ? _queue.first : null,
+      ),
+    );
   }
 
   Future<void> togglePlayPause() async {

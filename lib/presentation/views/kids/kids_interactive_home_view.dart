@@ -20,7 +20,8 @@ import 'widgets/quran_garden_tree.dart';
 import 'widgets/virtual_mascot_widget.dart';
 
 class KidsInteractiveHomeView extends StatefulWidget {
-  const KidsInteractiveHomeView({super.key});
+  final VoidCallback? onSwitchProfile;
+  const KidsInteractiveHomeView({super.key, this.onSwitchProfile});
 
   @override
   State<KidsInteractiveHomeView> createState() => _KidsInteractiveHomeViewState();
@@ -63,7 +64,13 @@ class _KidsInteractiveHomeViewState extends State<KidsInteractiveHomeView> {
             builder: (context, profState) {
               final active = profState.activeProfile;
               return TextButton.icon(
-                onPressed: () => ProfileSwitcherSheet.show(context),
+                onPressed: () {
+                  if (widget.onSwitchProfile != null) {
+                    widget.onSwitchProfile!();
+                  } else {
+                    ProfileSwitcherSheet.show(context);
+                  }
+                },
                 icon: CircleAvatar(
                   radius: 14,
                   backgroundColor: KidsColors.sunnyOrange,

@@ -24,6 +24,12 @@
 
       <!-- Mode & Profile Switcher Toolbar -->
       <div class="header-actions">
+        <!-- User Profile Indicator & Switcher Button -->
+        <button class="profile-switcher-btn" id="btn-header-profile" onclick="openWelcomeModal(true)" title="الملف التعريفي والسن والاستماع للآية الكريمة">
+          <span class="user-avatar-badge" id="header-user-avatar">👤</span>
+          <span class="user-name-text" id="header-user-name">طالب القرآن</span>
+        </button>
+
         <!-- Dual Mode Switcher -->
         <div class="mode-toggle-group">
           <button id="btn-mode-adult" class="mode-btn active" onclick="switchTheme('adult')">
@@ -92,91 +98,121 @@
           </div>
         </div>
 
-        <!-- ==================== MEMORIZATION SYSTEM SELECTOR (الأرباع vs الصفحات) ==================== -->
-        <div class="system-mode-card">
-          <div class="system-mode-header">
+        <!-- ==================== UNIFIED MEMORIZATION CONFIGURATION CARD (خيارات الحفظ الستة والأزرار الأربعة) ==================== -->
+        <div class="memorization-config-card" id="memorization-config-card">
+          <!-- Card Header -->
+          <div class="config-header">
             <div class="title-with-icon">
-              <span>🎯</span>
-              <h3>نظام وطريقة الحفظ المعتمدة</h3>
-            </div>
-            <span class="system-status-pill" id="system-status-pill">طريقة الصفحات مفعلة</span>
-          </div>
-
-          <div class="system-tabs-row">
-            <button type="button" class="system-tab-btn active" id="tab-system-page" onclick="setMemorizationSystem('page')">
-              <div class="tab-badge-icon">📖</div>
-              <div class="tab-text-wrap">
-                <span class="tab-main-title">طريقة الصفحات (مصحف المدينة)</span>
-                <span class="tab-sub-title">حفظ صفحة بصفحة (604 صفحة)</span>
+              <span class="config-badge-icon">🎛️</span>
+              <div>
+                <h3 class="config-title">خيارات الحفظ وتحديد نطاق التلاوة والترديد</h3>
+                <p class="config-subtitle">حدد الطريقة والرواية والشيخ القارئ والسورة والصفحة ونطاق الآيات</p>
               </div>
-            </button>
-            <button type="button" class="system-tab-btn" id="tab-system-rub" onclick="setMemorizationSystem('rub')">
-              <div class="tab-badge-icon">📜</div>
-              <div class="tab-text-wrap">
-                <span class="tab-main-title">طريقة الأرباع (الأحزاب والأرباع)</span>
-                <span class="tab-sub-title">حفظ ربعاً بربع (240 ربعاً)</span>
-              </div>
-            </button>
-          </div>
-        </div>
-
-        <!-- ==================== SURAH & AYAH RANGE CONTROLLER ==================== -->
-        <div class="range-controller-card">
-          <div class="controller-header">
-            <div class="title-with-icon">
-              <span>🎛️</span>
-              <h3>تحديد السورة ونطاق الآيات للحفظ والترديد</h3>
             </div>
             <span class="range-indicator-pill" id="range-indicator-pill">سورة البقرة • الآيات (1 - 5)</span>
           </div>
 
-          <div class="controller-controls-grid">
-            <!-- Surah Selector -->
-            <div class="controller-field">
-              <label for="surah-select">
-                <span>📖</span>
-                <span>اختر السورة:</span>
+          <!-- The 6 Numbered Selection Controls Grid -->
+          <div class="config-controls-grid">
+
+            <!-- 1. اختيار الطريقة: طريقة صفحات المصحف المدني أو طريقة الأرباع -->
+            <div class="config-field config-field-wide">
+              <label class="config-field-label">
+                <span class="step-num-pill">1</span>
+                <span>اختيار الطريقة:</span>
+                <span class="system-status-tag" id="system-status-pill">طريقة الصفحات مفعلة</span>
               </label>
-              <select id="surah-select" class="form-select range-select" onchange="onSurahSelectChange()">
+              <div class="system-choice-row">
+                <button type="button" class="system-choice-btn active" id="tab-system-page" onclick="setMemorizationSystem('page')">
+                  <span class="choice-icon">📖</span>
+                  <div class="choice-texts">
+                    <span class="choice-main">طريقة صفحات المصحف المدني</span>
+                    <span class="choice-sub">حفظ صفحة بصفحة (604 صفحات)</span>
+                  </div>
+                </button>
+                <button type="button" class="system-choice-btn" id="tab-system-rub" onclick="setMemorizationSystem('rub')">
+                  <span class="choice-icon">📜</span>
+                  <div class="choice-texts">
+                    <span class="choice-main">طريقة الأرباع والأحزاب</span>
+                    <span class="choice-sub">حفظ ربعاً بربع (240 ربعاً)</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- 2. اختيار الرواية -->
+            <div class="config-field">
+              <label for="riwayah-select" class="config-field-label">
+                <span class="step-num-pill">2</span>
+                <span>اختيار الرواية / القراءة:</span>
+              </label>
+              <select id="riwayah-select" class="form-select config-select" onchange="onRiwayahChange()">
+                <option value="hafs" selected>رواية حفص عن عاصم (الكوفي)</option>
+                <option value="qaloon">رواية قالون عن نافع (المدني)</option>
+                <option value="warsh">رواية ورش عن نافع (المدني)</option>
+                <option value="hamzah">قراءة حمزة - خلف عن حمزة</option>
+                <option value="kisai">قراءة الكسائي - الدوري وأبو الحارث</option>
+                <option value="soosi">قراءة أبي عمرو - السوسي بالإدغام</option>
+              </select>
+            </div>
+
+            <!-- 3. اختيار الشيخ القارئ -->
+            <div class="config-field">
+              <label for="reciter-select" class="config-field-label">
+                <span class="step-num-pill">3</span>
+                <span id="reciter-select-label">اختيار الشيخ القارئ:</span>
+              </label>
+              <select id="reciter-select" class="form-select config-select" onchange="onReciterChange()">
                 <!-- Populated dynamically via JS -->
               </select>
             </div>
 
-            <!-- Page Selector (Visible in Page Mode) -->
-            <div class="controller-field" id="page-selector-group">
-              <label for="page-select">
-                <span>📄</span>
-                <span>صفحة المصحف المدني:</span>
+            <!-- 4. اختيار السورة -->
+            <div class="config-field">
+              <label for="surah-select" class="config-field-label">
+                <span class="step-num-pill">4</span>
+                <span>اختيار السورة الكريمة:</span>
+              </label>
+              <select id="surah-select" class="form-select config-select" onchange="onSurahSelectChange()">
+                <!-- Populated dynamically via JS -->
+              </select>
+            </div>
+
+            <!-- 5. اختيار الصفحة (في طريقة الصفحات) -->
+            <div class="config-field" id="page-selector-group">
+              <label for="page-select" class="config-field-label">
+                <span class="step-num-pill">5</span>
+                <span>اختيار صفحة المصحف (1 - 604):</span>
               </label>
               <div class="stepper-wrap">
                 <button type="button" class="step-btn" onclick="stepMushafPage(-1)" title="الصفحة السابقة">◀</button>
-                <select id="page-select" class="form-select range-select" onchange="onPageSelectChange()">
+                <select id="page-select" class="form-select config-select" onchange="onPageSelectChange()">
                   <!-- Populated dynamically via JS -->
                 </select>
                 <button type="button" class="step-btn" onclick="stepMushafPage(1)" title="الصفحة التالية">▶</button>
               </div>
             </div>
 
-            <!-- Rub' Selector (Visible in Rub Mode) -->
-            <div class="controller-field" id="rub-selector-group" style="display: none;">
-              <label for="rub-select">
-                <span>📜</span>
-                <span>الربع من الحزب:</span>
+            <!-- 5 (بديل). اختيار الربع (في طريقة الأرباع) -->
+            <div class="config-field" id="rub-selector-group" style="display: none;">
+              <label for="rub-select" class="config-field-label">
+                <span class="step-num-pill">5</span>
+                <span>اختيار الربع من الحزب (1 - 240):</span>
               </label>
               <div class="stepper-wrap">
                 <button type="button" class="step-btn" onclick="stepRubQuarter(-1)" title="الربع السابق">◀</button>
-                <select id="rub-select" class="form-select range-select" onchange="onRubSelectChange()">
+                <select id="rub-select" class="form-select config-select" onchange="onRubSelectChange()">
                   <!-- Populated dynamically via JS -->
                 </select>
                 <button type="button" class="step-btn" onclick="stepRubQuarter(1)" title="الربع التالي">▶</button>
               </div>
             </div>
 
-            <!-- Ayah Range (From - To) -->
-            <div class="controller-field range-span-field">
-              <label>
-                <span>🔢</span>
-                <span>نطاق الآيات المراد تلاوتها وترديدها:</span>
+            <!-- 6. تحديد نطاق الآيات المراد تلاوتها وترديدها -->
+            <div class="config-field config-field-wide">
+              <label class="config-field-label">
+                <span class="step-num-pill">6</span>
+                <span>تحديد نطاق الآيات المراد تلاوتها وترديدها:</span>
               </label>
               <div class="range-inputs-container">
                 <div class="num-box">
@@ -188,21 +224,43 @@
                   <span class="box-label">إلى آية:</span>
                   <input type="number" id="input-range-to" class="range-input" min="1" max="286" value="5" onchange="onManualRangeChange()">
                 </div>
-                <button type="button" class="apply-range-button" onclick="applyCustomRange()">
-                  <span>تطبيق النطاق</span>
-                  <span>✓</span>
-                </button>
+                <!-- Quick range presets chips -->
+                <div class="quick-presets-chips">
+                  <button type="button" class="range-chip active" id="chip-full-page" onclick="setRangePreset('page')">كامل الصفحة (1 - 5)</button>
+                  <button type="button" class="range-chip" id="chip-single-ayah" onclick="setRangePreset('single')">الآية الحالية فقط</button>
+                  <button type="button" class="range-chip" id="chip-three-ayahs" onclick="setRangePreset('three')">٣ آيات (1 - 3)</button>
+                  <button type="button" class="range-chip" id="chip-rub-portion" onclick="setRangePreset('rub')">الربع كاملاً</button>
+                </div>
               </div>
             </div>
+
           </div>
 
-          <!-- Quick Range Presets Chips -->
-          <div class="quick-presets-chips">
-            <span class="chips-title">نطاقات سريعة:</span>
-            <button type="button" class="range-chip active" id="chip-full-page" onclick="setRangePreset('page')">كامل الصفحة (1 - 5)</button>
-            <button type="button" class="range-chip" id="chip-single-ayah" onclick="setRangePreset('single')">الآية الحالية فقط</button>
-            <button type="button" class="range-chip" id="chip-three-ayahs" onclick="setRangePreset('three')">٣ آيات (1 - 3)</button>
-            <button type="button" class="range-chip" id="chip-rub-portion" onclick="setRangePreset('rub')">الربع كاملاً (1 - 25)</button>
+          <!-- ==================== THE 4 ACTION BUTTONS (تطبيق • تشغيل • إيقاف مؤقت • إيقاف) ==================== -->
+          <div class="memorization-actions-toolbar">
+            <!-- 1. زر تطبيق (Apply) -->
+            <button type="button" class="mem-action-btn btn-action-apply" id="btn-mem-apply" onclick="applyCustomRange(true)" title="تطبيق خيارات الحفظ وتحديث المشغل والقراءة لحظياً">
+              <span class="action-icon">✓</span>
+              <span class="action-label">تطبيق</span>
+            </button>
+
+            <!-- 2. زر تشغيل (Play) -->
+            <button type="button" class="mem-action-btn btn-action-play" id="btn-mem-play" onclick="playCurrentMemorizationRange()" title="تشغيل تلاوة النطاق المحدد فوراً">
+              <span class="action-icon">▶</span>
+              <span class="action-label">تشغيل</span>
+            </button>
+
+            <!-- 3. زر إيقاف مؤقت (Pause) -->
+            <button type="button" class="mem-action-btn btn-action-pause" id="btn-mem-pause" onclick="pauseCurrentMemorizationAudio()" title="إيقاف مؤقت للتلاوة الحالية">
+              <span class="action-icon">⏸</span>
+              <span class="action-label">إيقاف مؤقت</span>
+            </button>
+
+            <!-- 4. زر إيقاف (Stop) -->
+            <button type="button" class="mem-action-btn btn-action-stop" id="btn-mem-stop" onclick="stopCurrentMemorizationAudio()" title="إيقاف التلاوة تماماً وإعادة المؤشر لبداية النطاق">
+              <span class="action-icon">⏹</span>
+              <span class="action-label">إيقاف</span>
+            </button>
           </div>
         </div>
 
@@ -804,8 +862,91 @@
     </div>
   </div>
 
+  <!-- 6. User Welcome & Profile Setup Modal (نافذة البداية الأولى مع تلاوة سورة الحجر آية 9) -->
+  <div id="modal-welcome-setup" class="modal-overlay welcome-modal-overlay" onclick="closeModals(event)">
+    <div class="modal-card welcome-modal-card">
+      <div class="welcome-header">
+        <div class="welcome-decor-crest">📖 ✨</div>
+        <h2 class="welcome-title">مصحف الحفظ والورد القرآني</h2>
+        <p class="welcome-subtitle">منظومة إتقان التلاوة والحفظ الميسر للكبار والأطفال</p>
+      </div>
+
+      <!-- Sacred Verse Box: Surah Al-Hijr Ayah 9 -->
+      <div class="sacred-verse-box">
+        <div class="verse-corner top-right">۞</div>
+        <div class="verse-corner top-left">۞</div>
+        <div class="verse-calligraphy-wrap">
+          <p class="verse-arabic-calligraphy">
+            ﴿ إِنَّا نَحْنُ نَزَّلْنَا الذِّكْرَ وَإِنَّا لَهُ لَحَافِظُونَ ﴾
+          </p>
+          <div class="verse-citation">
+            <span class="citation-pill">سورة الحجر • الآية ٩</span>
+          </div>
+        </div>
+
+        <!-- Recitation Player Bar (الشيخ محمود خليل الحصري) -->
+        <div class="intro-audio-bar">
+          <div class="reciter-tag">
+            <span class="sheikh-avatar">🎙️</span>
+            <span class="sheikh-name">فضيلة الشيخ محمود خليل الحصري (رحمه الله)</span>
+          </div>
+          <div class="audio-controls-row">
+            <button type="button" class="intro-play-toggle-btn" id="btn-intro-audio-toggle" onclick="toggleIntroAudio()">
+              <span id="intro-audio-icon">▶</span>
+              <span id="intro-audio-status">استمع لتلاوة الآية الكريمة</span>
+            </button>
+            <div class="eq-visualizer" id="eq-visualizer">
+              <span class="eq-bar bar1"></span>
+              <span class="eq-bar bar2"></span>
+              <span class="eq-bar bar3"></span>
+              <span class="eq-bar bar4"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Profile Input Form -->
+      <div class="welcome-form">
+        <div class="welcome-field">
+          <label for="welcome-user-name" class="welcome-label">
+            <span>👤</span>
+            <span>اسم المستخدم (اسمك الكريم أو اسم الطفل):</span>
+          </label>
+          <input type="text" id="welcome-user-name" class="welcome-input" placeholder="اكتب اسمك الكريم هنا..." value="طالب القرآن">
+        </div>
+
+        <div class="welcome-field">
+          <label for="welcome-user-age" class="welcome-label">
+            <span>🎂</span>
+            <span>السن / العمر (بالسنوات):</span>
+          </label>
+          <input type="number" id="welcome-user-age" class="welcome-input" min="3" max="120" value="25" oninput="onWelcomeAgeInput()" placeholder="أدخل العمر...">
+        </div>
+
+        <!-- Smart Routing Dynamic Badge -->
+        <div class="mode-routing-badge adult" id="mode-routing-badge">
+          <div class="routing-icon" id="routing-icon">📜</div>
+          <div class="routing-info">
+            <strong id="routing-title">بناءً على السن (١٥ سنة فما فوق): واجهة الكبار</strong>
+            <p id="routing-desc">نظام الحفظ المتقن الكلاسيكي بالأرباع أو الصفحات، الجدولة لـ 280 يوماً، ومصحف الصلوات الخمس.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <div class="welcome-actions">
+        <button type="button" class="btn-start-app" onclick="confirmWelcomeSetup()">
+          <span>تأكيد وبدء الرحلة القرآنية المباركة ✨</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Audio Element for EveryAyah CDN -->
   <audio id="quran-audio" preload="auto"></audio>
+
+  <!-- Audio Element for Startup Sacred Verse (Husary Al-Hijr Ayah 9) -->
+  <audio id="intro-verse-audio" src="/audio/husary_15_9.mp3" preload="auto"></audio>
 
   <script src="app.js"></script>
 </body>
