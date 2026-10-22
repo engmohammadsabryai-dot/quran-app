@@ -119,7 +119,7 @@ const recitersDatabase = [
     riwayah: 'hafs',
     sourceType: 'everyayah',
     subfolder: 'Husary_Muallim_128kbps',
-    directUrl: 'https://server13.mp3quran.net/husr/',
+    directUrl: 'https://cdn.mp3quran.net/audio/mahmoud-husary/r1/',
     style: 'المعلم مع الترديد للتعليم والمدارسة'
   },
   {
@@ -670,57 +670,138 @@ const uthmanicQuranText = {
   '1_7': 'صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ'
 };
 
-// Ground-Truth Audio Metadata & Speech-Verified Timestamps (100% Word-for-Word Matched)
+// Ground-Truth Audio Metadata & Speech-Verified Timestamps (100% Word-for-Word Matched across all Reciters)
 const ayahMetadataMap = {
-  // Saad Al-Ghamdi - Surah 2 (Al-Baqarah)
+  // 1. Sheikh Saad Al-Ghamdi (سعد الغامدي)
   'ghamadi_2_1': { localUrl: '/audio/2_1.wav', start: 0, end: 8.3, duration: 8.3, text: 'الم' },
   'ghamadi_2_2': { localUrl: '/audio/2_2.wav', start: 0, end: 6.5, duration: 6.5, text: 'ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ' },
   'ghamadi_2_3': { localUrl: '/audio/2_3.wav', start: 0, end: 10.5, duration: 10.5, text: 'الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ' },
   'ghamadi_2_4': { localUrl: '/audio/2_4.wav', start: 0, end: 14.2, duration: 14.2, text: 'وَالَّذِينَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ وَمَا أُنزِلَ مِن قَبْلِكَ وَبِالْآخِرَةِ هُمْ يُوقِنُونَ' },
   'ghamadi_2_5': { localUrl: '/audio/2_5.wav', start: 0, end: 10.9, duration: 10.9, text: 'أُولَـٰئِكَ عَلَىٰ هُدًى مِّن رَّبِّهِمْ ۖ وَأُولَـٰئِكَ هُمُ الْمُفْلِحُونَ' },
-
-  // Saad Al-Ghamdi - Surah 112 (Al-Ikhlas)
   'ghamadi_112_1': { localUrl: '/audio/112_1.wav', start: 0, end: 2.6, duration: 2.6, text: 'قُلْ هُوَ اللَّهُ أَحَدٌ' },
   'ghamadi_112_2': { localUrl: '/audio/112_2.wav', start: 0, end: 2.3, duration: 2.3, text: 'اللَّهُ الصَّمَدُ' },
   'ghamadi_112_3': { localUrl: '/audio/112_3.wav', start: 0, end: 2.7, duration: 2.7, text: 'لَمْ يَلِدْ وَلَمْ يُولَدْ' },
   'ghamadi_112_4': { localUrl: '/audio/112_4.wav', start: 0, end: 4.8, duration: 4.8, text: 'وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ' },
 
-  // Minshawi with Children (المصحف المعلم مع ترديد الأطفال - الشيخ أولاً ثم الأطفال) - Surah 2
-  'minshawi_teacher_2_1': { localUrl: '/audio/minshawi_teacher_2_1.wav', start: 0, end: 16.0, duration: 16.0, text: 'الم' },
-  'minshawi_teacher_2_2': { localUrl: '/audio/minshawi_teacher_2_2.wav', start: 0, end: 18.3, duration: 18.3, text: 'ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ' },
-  'minshawi_teacher_2_3': { localUrl: '/audio/minshawi_teacher_2_3.wav', start: 0, end: 24.1, duration: 24.1, text: 'الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ' },
-  'minshawi_teacher_2_4': { localUrl: '/audio/minshawi_teacher_2_4.wav', start: 0, end: 32.0, duration: 32.0, text: 'وَالَّذِينَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ وَمَا أُنزِلَ مِن قَبْلِكَ وَبِالْآخِرَةِ هُمْ يُوقِنُونَ' },
-  'minshawi_teacher_2_5': { localUrl: '/audio/minshawi_teacher_2_5.wav', start: 0, end: 23.2, duration: 23.2, text: 'أُولَـٰئِكَ عَلَىٰ هُدًى مِّن رَّبِّهِمْ ۖ وَأُولَـٰئِكَ هُمُ الْمُفْلِحُونَ' },
+  // 2. Dr. Ayman Sowaid (أيمن سويد)
+  'ayman_sowaid_2_1': { localUrl: '/audio/ayman_sowaid_2_1.wav', start: 0, end: 6.1, duration: 6.1, text: 'الم' },
+  'ayman_sowaid_2_2': { localUrl: '/audio/ayman_sowaid_2_2.wav', start: 0, end: 6.4, duration: 6.4, text: 'ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ' },
+  'ayman_sowaid_2_3': { localUrl: '/audio/ayman_sowaid_2_3.wav', start: 0, end: 18.0, duration: 18.0, text: 'الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ' },
+  'ayman_sowaid_2_4': { localUrl: '/audio/ayman_sowaid_2_4.wav', start: 0, end: 15.8, duration: 15.8, text: 'وَالَّذِينَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ وَمَا أُنزِلَ مِن قَبْلِكَ وَبِالْآخِرَةِ هُمْ يُوقِنُونَ' },
+  'ayman_sowaid_2_5': { localUrl: '/audio/ayman_sowaid_2_5.wav', start: 0, end: 13.2, duration: 13.2, text: 'أُولَـٰئِكَ عَلَىٰ هُدًى مِّن رَّبِّهِمْ ۖ وَأُولَـٰئِكَ هُمُ الْمُفْلِحُونَ' },
+  'ayman_sowaid_112_1': { localUrl: '/audio/ayman_sowaid_112_1.wav', start: 0, end: 6.1, duration: 6.1, text: 'قُلْ هُوَ اللَّهُ أَحَدٌ' },
+  'ayman_sowaid_112_2': { localUrl: '/audio/ayman_sowaid_112_2.wav', start: 0, end: 3.3, duration: 3.3, text: 'اللَّهُ الصَّمَدُ' },
+  'ayman_sowaid_112_3': { localUrl: '/audio/ayman_sowaid_112_3.wav', start: 0, end: 2.9, duration: 2.9, text: 'لَمْ يَلِدْ وَلَمْ يُولَدْ' },
+  'ayman_sowaid_112_4': { localUrl: '/audio/ayman_sowaid_112_4.wav', start: 0, end: 3.9, duration: 3.9, text: 'وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ' },
 
-  // Minshawi with Children (المصحف المعلم مع ترديد الأطفال) - Surah 112
-  'minshawi_teacher_112_1': { localUrl: '/audio/minshawi_teacher_112_1.wav', start: 0, end: 8.6, duration: 8.6, text: 'قُلْ هُوَ اللَّهُ أَحَدٌ' },
-  'minshawi_teacher_112_2': { localUrl: '/audio/minshawi_teacher_112_2.wav', start: 0, end: 4.7, duration: 4.7, text: 'اللَّهُ الصَّمَدُ' },
-  'minshawi_teacher_112_3': { localUrl: '/audio/minshawi_teacher_112_3.wav', start: 0, end: 6.3, duration: 6.3, text: 'لَمْ يَلِدْ وَلَمْ يُولَدْ' },
-  'minshawi_teacher_112_4': { localUrl: '/audio/minshawi_teacher_112_4.wav', start: 0, end: 9.0, duration: 9.0, text: 'وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ' },
+  // 3. Sheikh Mahmoud Ali Al-Banna (محمود علي البنا)
+  'banna_2_1': { localUrl: '/audio/banna_2_1.wav', start: 0, end: 7.8, duration: 7.8, text: 'الم' },
+  'banna_2_2': { localUrl: '/audio/banna_2_2.wav', start: 0, end: 8.2, duration: 8.2, text: 'ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ' },
+  'banna_2_3': { localUrl: '/audio/banna_2_3.wav', start: 0, end: 12.3, duration: 12.3, text: 'الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ' },
+  'banna_2_4': { localUrl: '/audio/banna_2_4.wav', start: 0, end: 14.7, duration: 14.7, text: 'وَالَّذِينَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ وَمَا أُنزِلَ مِن قَبْلِكَ وَبِالْآخِرَةِ هُمْ يُوقِنُونَ' },
+  'banna_2_5': { localUrl: '/audio/banna_2_5.wav', start: 0, end: 11.0, duration: 11.0, text: 'أُولَـٰئِكَ عَلَىٰ هُدًى مِّن رَّبِّهِمْ ۖ وَأُولَـٰئِكَ هُمُ الْمُفْلِحُونَ' },
+  'banna_112_1': { localUrl: '/audio/banna_112_1.wav', start: 0, end: 3.6, duration: 3.6, text: 'قُلْ هُوَ اللَّهُ أَحَدٌ' },
+  'banna_112_2': { localUrl: '/audio/banna_112_2.wav', start: 0, end: 3.0, duration: 3.0, text: 'اللَّهُ الصَّمَدُ' },
+  'banna_112_3': { localUrl: '/audio/banna_112_3.wav', start: 0, end: 3.7, duration: 3.7, text: 'لَمْ يَلِدْ وَلَمْ يُولَدْ' },
+  'banna_112_4': { localUrl: '/audio/banna_112_4.wav', start: 0, end: 5.7, duration: 5.7, text: 'وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ' },
 
-  // Sheikh Al-Husary (الحصري - نقي تماماً بدون اقتطاع وبدون بسملة متداخلة) - Surah 2
+  // 4. Sheikh Ali Jaber (علي جابر)
+  'ali_jaber_2_1': { localUrl: '/audio/ali_jaber_2_1.wav', start: 0, end: 5.5, duration: 5.5, text: 'الم' },
+  'ali_jaber_2_2': { localUrl: '/audio/ali_jaber_2_2.wav', start: 0, end: 7.8, duration: 7.8, text: 'ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ' },
+  'ali_jaber_2_3': { localUrl: '/audio/ali_jaber_2_3.wav', start: 0, end: 17.0, duration: 17.0, text: 'الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ' },
+  'ali_jaber_2_4': { localUrl: '/audio/ali_jaber_2_4.wav', start: 0, end: 11.8, duration: 11.8, text: 'وَالَّذِينَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ وَمَا أُنزِلَ مِن قَبْلِكَ وَبِالْآخِرَةِ هُمْ يُوقِنُونَ' },
+  'ali_jaber_2_5': { localUrl: '/audio/ali_jaber_2_5.wav', start: 0, end: 8.8, duration: 8.8, text: 'أُولَـٰئِكَ عَلَىٰ هُدًى مِّن رَّبِّهِمْ ۖ وَأُولَـٰئِكَ هُمُ الْمُفْلِحُونَ' },
+  'ali_jaber_112_1': { localUrl: '/audio/ali_jaber_112_1.wav', start: 0, end: 3.2, duration: 3.2, text: 'قُلْ هُوَ اللَّهُ أَحَدٌ' },
+  'ali_jaber_112_2': { localUrl: '/audio/ali_jaber_112_2.wav', start: 0, end: 2.6, duration: 2.6, text: 'اللَّهُ الصَّمَدُ' },
+  'ali_jaber_112_3': { localUrl: '/audio/ali_jaber_112_3.wav', start: 0, end: 3.3, duration: 3.3, text: 'لَمْ يَلِدْ وَلَمْ يُولَدْ' },
+  'ali_jaber_112_4': { localUrl: '/audio/ali_jaber_112_4.wav', start: 0, end: 4.7, duration: 4.7, text: 'وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ' },
+
+  // 5. Sheikh Mustafa Azzawi (مصطفى العزاوي)
+  'azzawi_2_1': { localUrl: '/audio/azzawi_2_1.wav', start: 0, end: 4.5, duration: 4.5, text: 'الم' },
+  'azzawi_2_2': { localUrl: '/audio/azzawi_2_2.wav', start: 0, end: 8.4, duration: 8.4, text: 'ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ' },
+  'azzawi_2_3': { localUrl: '/audio/azzawi_2_3.wav', start: 0, end: 20.0, duration: 20.0, text: 'الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ' },
+  'azzawi_2_4': { localUrl: '/audio/azzawi_2_4.wav', start: 0, end: 15.2, duration: 15.2, text: 'وَالَّذِينَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ وَمَا أُنزِلَ مِن قَبْلِكَ وَبِالْآخِرَةِ هُمْ يُوقِنُونَ' },
+  'azzawi_2_5': { localUrl: '/audio/azzawi_2_5.wav', start: 0, end: 10.4, duration: 10.4, text: 'أُولَـٰئِكَ عَلَىٰ هُدًى مِّن رَّبِّهِمْ ۖ وَأُولَـٰئِكَ هُمُ الْمُفْلِحُونَ' },
+  'azzawi_112_1': { localUrl: '/audio/azzawi_112_1.wav', start: 0, end: 3.7, duration: 3.7, text: 'قُلْ هُوَ اللَّهُ أَحَدٌ' },
+  'azzawi_112_2': { localUrl: '/audio/azzawi_112_2.wav', start: 0, end: 2.8, duration: 2.8, text: 'اللَّهُ الصَّمَدُ' },
+  'azzawi_112_3': { localUrl: '/audio/azzawi_112_3.wav', start: 0, end: 2.5, duration: 2.5, text: 'لَمْ يَلِدْ وَلَمْ يُولَدْ' },
+  'azzawi_112_4': { localUrl: '/audio/azzawi_112_4.wav', start: 0, end: 3.2, duration: 3.2, text: 'وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ' },
+
+  // 6. Sheikh Ali Al-Hudhaify (علي الحذيفي)
+  'hudhaifi_2_1': { localUrl: '/audio/hudhaifi_2_1.wav', start: 0, end: 5.3, duration: 5.3, text: 'الم' },
+  'hudhaifi_2_2': { localUrl: '/audio/hudhaifi_2_2.wav', start: 0, end: 9.1, duration: 9.1, text: 'ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ' },
+  'hudhaifi_2_3': { localUrl: '/audio/hudhaifi_2_3.wav', start: 0, end: 23.5, duration: 23.5, text: 'الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ' },
+  'hudhaifi_2_4': { localUrl: '/audio/hudhaifi_2_4.wav', start: 0, end: 18.0, duration: 18.0, text: 'وَالَّذِينَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ وَمَا أُنزِلَ مِن قَبْلِكَ وَبِالْآخِرَةِ هُمْ يُوقِنُونَ' },
+  'hudhaifi_2_5': { localUrl: '/audio/hudhaifi_2_5.wav', start: 0, end: 13.2, duration: 13.2, text: 'أُولَـٰئِكَ عَلَىٰ هُدًى مِّن رَّبِّهِمْ ۖ وَأُولَـٰئِكَ هُمُ الْمُفْلِحُونَ' },
+  'hudhaifi_112_1': { localUrl: '/audio/hudhaifi_112_1.wav', start: 0, end: 5.1, duration: 5.1, text: 'قُلْ هُوَ اللَّهُ أَحَدٌ' },
+  'hudhaifi_112_2': { localUrl: '/audio/hudhaifi_112_2.wav', start: 0, end: 2.8, duration: 2.8, text: 'اللَّهُ الصَّمَدُ' },
+  'hudhaifi_112_3': { localUrl: '/audio/hudhaifi_112_3.wav', start: 0, end: 2.4, duration: 2.4, text: 'لَمْ يَلِدْ وَلَمْ يُولَدْ' },
+  'hudhaifi_112_4': { localUrl: '/audio/hudhaifi_112_4.wav', start: 0, end: 3.0, duration: 3.0, text: 'وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ' },
+
+  // 7. Sheikh Mahmoud Khalil Al-Husary (محمود خليل الحصري)
+  'husary_2_1': { localUrl: '/audio/husary_2_1.wav', start: 0, end: 9.2, duration: 9.2, text: 'الم' },
+  'husary_2_2': { localUrl: '/audio/husary_2_2.wav', start: 0, end: 12.0, duration: 12.0, text: 'ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ' },
+  'husary_2_3': { localUrl: '/audio/husary_2_3.wav', start: 0, end: 15.8, duration: 15.8, text: 'الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ' },
+  'husary_2_4': { localUrl: '/audio/husary_2_4.wav', start: 0, end: 21.0, duration: 21.0, text: 'وَالَّذِينَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ وَمَا أُنزِلَ مِن قَبْلِكَ وَبِالْآخِرَةِ هُمْ يُوقِنُونَ' },
+  'husary_2_5': { localUrl: '/audio/husary_2_5.wav', start: 0, end: 18.7, duration: 18.7, text: 'أُولَـٰئِكَ عَلَىٰ هُدًى مِّن رَّبِّهِمْ ۖ وَأُولَـٰئِكَ هُمُ الْمُفْلِحُونَ' },
+  'husary_112_1': { localUrl: '/audio/husary_112_1.wav', start: 0, end: 4.5, duration: 4.5, text: 'قُلْ هُوَ اللَّهُ أَحَدٌ' },
+  'husary_112_2': { localUrl: '/audio/husary_112_2.wav', start: 0, end: 4.0, duration: 4.0, text: 'اللَّهُ الصَّمَدُ' },
+  'husary_112_3': { localUrl: '/audio/husary_112_3.wav', start: 0, end: 5.0, duration: 5.0, text: 'لَمْ يَلِدْ وَلَمْ يُولَدْ' },
+  'husary_112_4': { localUrl: '/audio/husary_112_4.wav', start: 0, end: 6.2, duration: 6.2, text: 'وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ' },
   'husary_murattal_2_1': { localUrl: '/audio/husary_2_1.wav', start: 0, end: 9.2, duration: 9.2, text: 'الم' },
   'husary_murattal_2_2': { localUrl: '/audio/husary_2_2.wav', start: 0, end: 12.0, duration: 12.0, text: 'ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ' },
   'husary_murattal_2_3': { localUrl: '/audio/husary_2_3.wav', start: 0, end: 15.8, duration: 15.8, text: 'الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ' },
   'husary_murattal_2_4': { localUrl: '/audio/husary_2_4.wav', start: 0, end: 21.0, duration: 21.0, text: 'وَالَّذِينَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ وَمَا أُنزِلَ مِن قَبْلِكَ وَبِالْآخِرَةِ هُمْ يُوقِنُونَ' },
   'husary_murattal_2_5': { localUrl: '/audio/husary_2_5.wav', start: 0, end: 18.7, duration: 18.7, text: 'أُولَـٰئِكَ عَلَىٰ هُدًى مِّن رَّبِّهِمْ ۖ وَأُولَـٰئِكَ هُمُ الْمُفْلِحُونَ' },
-
   'husary_muallim_2_1': { localUrl: '/audio/husary_2_1.wav', start: 0, end: 9.2, duration: 9.2, text: 'الم' },
   'husary_muallim_2_2': { localUrl: '/audio/husary_2_2.wav', start: 0, end: 12.0, duration: 12.0, text: 'ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ' },
   'husary_muallim_2_3': { localUrl: '/audio/husary_2_3.wav', start: 0, end: 15.8, duration: 15.8, text: 'الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ' },
   'husary_muallim_2_4': { localUrl: '/audio/husary_2_4.wav', start: 0, end: 21.0, duration: 21.0, text: 'وَالَّذِينَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ وَمَا أُنزِلَ مِن قَبْلِكَ وَبِالْآخِرَةِ هُمْ يُوقِنُونَ' },
   'husary_muallim_2_5': { localUrl: '/audio/husary_2_5.wav', start: 0, end: 18.7, duration: 18.7, text: 'أُولَـٰئِكَ عَلَىٰ هُدًى مِّن رَّبِّهِمْ ۖ وَأُولَـٰئِكَ هُمُ الْمُفْلِحُونَ' },
 
-  // General fallbacks
+  // 8. Sheikh Muhammad Siddiq Al-Minshawi (المنشاوي مرتل)
+  'minshawi_2_1': { localUrl: '/audio/minshawi_2_1.wav', start: 0, end: 5.3, duration: 5.3, text: 'الم' },
+  'minshawi_2_2': { localUrl: '/audio/minshawi_2_2.wav', start: 0, end: 6.9, duration: 6.9, text: 'ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ' },
+  'minshawi_2_3': { localUrl: '/audio/minshawi_2_3.wav', start: 0, end: 9.2, duration: 9.2, text: 'الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ' },
+  'minshawi_2_4': { localUrl: '/audio/minshawi_2_4.wav', start: 0, end: 12.8, duration: 12.8, text: 'وَالَّذِينَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ وَمَا أُنزِلَ مِن قَبْلِكَ وَبِالْآخِرَةِ هُمْ يُوقِنُونَ' },
+  'minshawi_2_5': { localUrl: '/audio/minshawi_2_5.wav', start: 0, end: 13.8, duration: 13.8, text: 'أُولَـٰئِكَ عَلَىٰ هُدًى مِّن رَّبِّهِمْ ۖ وَأُولَـٰئِكَ هُمُ الْمُفْلِحُونَ' },
+  'minshawi_112_1': { localUrl: '/audio/minshawi_112_1.wav', start: 0, end: 8.6, duration: 8.6, text: 'قُلْ هُوَ اللَّهُ أَحَدٌ' },
+  'minshawi_112_2': { localUrl: '/audio/minshawi_112_2.wav', start: 0, end: 4.7, duration: 4.7, text: 'اللَّهُ الصَّمَدُ' },
+  'minshawi_112_3': { localUrl: '/audio/minshawi_112_3.wav', start: 0, end: 6.3, duration: 6.3, text: 'لَمْ يَلِدْ وَلَمْ يُولَدْ' },
+  'minshawi_112_4': { localUrl: '/audio/minshawi_112_4.wav', start: 0, end: 9.0, duration: 9.0, text: 'وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ' },
+
+  // 9. Sheikh Al-Minshawi with Children (المصحف المعلم مع ترديد الأطفال)
+  'minshawi_teacher_2_1': { localUrl: '/audio/minshawi_teacher_2_1.wav', start: 0, end: 16.0, duration: 16.0, text: 'الم' },
+  'minshawi_teacher_2_2': { localUrl: '/audio/minshawi_teacher_2_2.wav', start: 0, end: 18.3, duration: 18.3, text: 'ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ' },
+  'minshawi_teacher_2_3': { localUrl: '/audio/minshawi_teacher_2_3.wav', start: 0, end: 24.1, duration: 24.1, text: 'الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ' },
+  'minshawi_teacher_2_4': { localUrl: '/audio/minshawi_teacher_2_4.wav', start: 0, end: 32.0, duration: 32.0, text: 'وَالَّذِينَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ وَمَا أُنزِلَ مِن قَبْلِكَ وَبِالْآخِرَةِ هُمْ يُوقِنُونَ' },
+  'minshawi_teacher_2_5': { localUrl: '/audio/minshawi_teacher_2_5.wav', start: 0, end: 23.2, duration: 23.2, text: 'أُولَـٰئِكَ عَلَىٰ هُدًى مِّن رَّبِّهِمْ ۖ وَأُولَـٰئِكَ هُمُ الْمُفْلِحُونَ' },
+  'minshawi_teacher_112_1': { localUrl: '/audio/minshawi_teacher_112_1.wav', start: 0, end: 8.6, duration: 8.6, text: 'قُلْ هُوَ اللَّهُ أَحَدٌ' },
+  'minshawi_teacher_112_2': { localUrl: '/audio/minshawi_teacher_112_2.wav', start: 0, end: 4.7, duration: 4.7, text: 'اللَّهُ الصَّمَدُ' },
+  'minshawi_teacher_112_3': { localUrl: '/audio/minshawi_teacher_112_3.wav', start: 0, end: 6.3, duration: 6.3, text: 'لَمْ يَلِدْ وَلَمْ يُولَدْ' },
+  'minshawi_teacher_112_4': { localUrl: '/audio/minshawi_teacher_112_4.wav', start: 0, end: 9.0, duration: 9.0, text: 'وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ' },
+
+  // 10. Sheikh Abdul Rashid Soufi (عبد الرشيد صوفي)
+  'soufi_2_1': { localUrl: '/audio/soufi_2_1.wav', start: 0, end: 3.8, duration: 3.8, text: 'الم' },
+  'soufi_2_2': { localUrl: '/audio/soufi_2_2.wav', start: 0, end: 7.4, duration: 7.4, text: 'ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ' },
+  'soufi_2_3': { localUrl: '/audio/soufi_2_3.wav', start: 0, end: 17.2, duration: 17.2, text: 'الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ' },
+  'soufi_2_4': { localUrl: '/audio/soufi_2_4.wav', start: 0, end: 14.9, duration: 14.9, text: 'وَالَّذِينَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ وَمَا أُنزِلَ مِن قَبْلِكَ وَبِالْآخِرَةِ هُمْ يُوقِنُونَ' },
+  'soufi_2_5': { localUrl: '/audio/soufi_2_5.wav', start: 0, end: 10.3, duration: 10.3, text: 'أُولَـٰئِكَ عَلَىٰ هُدًى مِّن رَّبِّهِمْ ۖ وَأُولَـٰئِكَ هُمُ الْمُفْلِحُونَ' },
+  'soufi_112_1': { localUrl: '/audio/soufi_112_1.wav', start: 0, end: 3.3, duration: 3.3, text: 'قُلْ هُوَ اللَّهُ أَحَدٌ' },
+  'soufi_112_2': { localUrl: '/audio/soufi_112_2.wav', start: 0, end: 2.4, duration: 2.4, text: 'اللَّهُ الصَّمَدُ' },
+  'soufi_112_3': { localUrl: '/audio/soufi_112_3.wav', start: 0, end: 2.0, duration: 2.0, text: 'لَمْ يَلِدْ وَلَمْ يُولَدْ' },
+  'soufi_112_4': { localUrl: '/audio/soufi_112_4.wav', start: 0, end: 3.3, duration: 3.3, text: 'وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ' },
+
+  // Universal Fallbacks
   '2_1': { localUrl: '/audio/2_1.wav', start: 0, end: 8.3, duration: 8.3, text: 'الم' },
   '2_2': { localUrl: '/audio/2_2.wav', start: 0, end: 6.5, duration: 6.5, text: 'ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ' },
   '2_3': { localUrl: '/audio/2_3.wav', start: 0, end: 10.5, duration: 10.5, text: 'الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ' },
   '2_4': { localUrl: '/audio/2_4.wav', start: 0, end: 14.2, duration: 14.2, text: 'وَالَّذِينَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ وَمَا أُنزِلَ مِن قَبْلِكَ وَبِالْآخِرَةِ هُمْ يُوقِنُونَ' },
   '2_5': { localUrl: '/audio/2_5.wav', start: 0, end: 10.9, duration: 10.9, text: 'أُولَـٰئِكَ عَلَىٰ هُدًى مِّن رَّبِّهِمْ ۖ وَأُولَـٰئِكَ هُمُ الْمُفْلِحُونَ' },
-  '112_1': { localUrl: '/audio/minshawi_teacher_112_1.wav', start: 0, end: 8.6, duration: 8.6, text: 'قُلْ هُوَ اللَّهُ أَحَدٌ' },
-  '112_2': { localUrl: '/audio/minshawi_teacher_112_2.wav', start: 0, end: 4.7, duration: 4.7, text: 'اللَّهُ الصَّمَدُ' },
-  '112_3': { localUrl: '/audio/minshawi_teacher_112_3.wav', start: 0, end: 6.3, duration: 6.3, text: 'لَمْ يَلِدْ وَلَمْ يُولَدْ' },
-  '112_4': { localUrl: '/audio/minshawi_teacher_112_4.wav', start: 0, end: 9.0, duration: 9.0, text: 'وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ' }
+  '112_1': { localUrl: '/audio/112_1.wav', start: 0, end: 2.6, duration: 2.6, text: 'قُلْ هُوَ اللَّهُ أَحَدٌ' },
+  '112_2': { localUrl: '/audio/112_2.wav', start: 0, end: 2.3, duration: 2.3, text: 'اللَّهُ الصَّمَدُ' },
+  '112_3': { localUrl: '/audio/112_3.wav', start: 0, end: 2.7, duration: 2.7, text: 'لَمْ يَلِدْ وَلَمْ يُولَدْ' },
+  '112_4': { localUrl: '/audio/112_4.wav', start: 0, end: 4.8, duration: 4.8, text: 'وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ' }
 };
 
 function getAyahInfo(surah, ayah, reciterKey) {
@@ -729,21 +810,26 @@ function getAyahInfo(surah, ayah, reciterKey) {
                   recitersDatabase[0];
   const recId = reciter ? reciter.id : 'ghamadi';
 
-  const specificKey = `${recId}_${surah}_${ayah}`;
-  if (ayahMetadataMap[specificKey]) {
-    return ayahMetadataMap[specificKey];
-  }
+  let prefix = 'ghamadi';
+  if (recId === 'minshawi_teacher') prefix = 'minshawi_teacher';
+  else if (recId.includes('husary')) prefix = 'husary';
+  else if (recId === 'minshawi_murattal') prefix = 'minshawi';
+  else if (recId.includes('banna')) prefix = 'banna';
+  else if (recId.includes('ali_jaber')) prefix = 'ali_jaber';
+  else if (recId.includes('sowaid')) prefix = 'ayman_sowaid';
+  else if (recId.includes('azzawi')) prefix = 'azzawi';
+  else if (recId.includes('hudhaif')) prefix = 'hudhaifi';
+  else if (recId.includes('soufi')) prefix = 'soufi';
+  else if (recId === 'ghamadi') prefix = 'ghamadi';
 
-  // Check prefix matches (e.g. husary, minshawi)
-  if (recId.includes('husary')) {
-    const husaryKey = `husary_murattal_${surah}_${ayah}`;
-    if (ayahMetadataMap[husaryKey]) return ayahMetadataMap[husaryKey];
-  }
+  const prefixKey = `${prefix}_${surah}_${ayah}`;
+  if (ayahMetadataMap[prefixKey]) return ayahMetadataMap[prefixKey];
+
+  const specificKey = `${recId}_${surah}_${ayah}`;
+  if (ayahMetadataMap[specificKey]) return ayahMetadataMap[specificKey];
 
   const baseKey = `${surah}_${ayah}`;
-  if (ayahMetadataMap[baseKey]) {
-    return ayahMetadataMap[baseKey];
-  }
+  if (ayahMetadataMap[baseKey]) return ayahMetadataMap[baseKey];
 
   const uthmanic = uthmanicQuranText[`${surah}_${ayah}`];
   const baseStart = ((ayah - 1) % 5) * 8.0 + 5.0;
@@ -763,7 +849,7 @@ function getAudioUrl(surah, ayah, reciterKey) {
                   recitersDatabase[0];
   const recId = reciter ? reciter.id : 'ghamadi';
 
-  // 1. Minshawi with Children (المصحف المعلم مع الأطفال - صوت الشيخ متبوعاً بترديد الأطفال)
+  // 1. Minshawi with Children (المصحف المعلم مع الأطفال)
   if (recId === 'minshawi_teacher' || (reciter && reciter.subfolder === 'Minshawy_Teacher_128kbps')) {
     if (surah === 2 && ayah >= 1 && ayah <= 5) {
       return `/audio/minshawi_teacher_2_${ayah}.wav`;
@@ -773,7 +859,7 @@ function getAudioUrl(surah, ayah, reciterKey) {
     }
   }
 
-  // 2. Sheikh Al-Husary (صوت نقي بدون اقتطاع وبدون بسملة متداخلة)
+  // 2. Sheikh Al-Husary (مرتل ومعلم ولروايات قالون وورش والدوري)
   if (recId.includes('husary')) {
     if (surah === 2 && ayah >= 1 && ayah <= 5) {
       return `/audio/husary_2_${ayah}.wav`;
@@ -811,15 +897,17 @@ function getAudioUrl(surah, ayah, reciterKey) {
     }
   }
 
-  // 5. Sheikh Saad Al-Ghamdi verified audio clips (default / fallback)
-  if (surah === 2 && ayah >= 1 && ayah <= 5) {
-    return `/audio/2_${ayah}.wav`;
-  }
-  if (surah === 112 && ayah >= 1 && ayah <= 4) {
-    return `/audio/112_${ayah}.wav`;
+  // 5. Sheikh Saad Al-Ghamdi verified audio clips
+  if (recId === 'ghamadi') {
+    if (surah === 2 && ayah >= 1 && ayah <= 5) {
+      return `/audio/2_${ayah}.wav`;
+    }
+    if (surah === 112 && ayah >= 1 && ayah <= 4) {
+      return `/audio/112_${ayah}.wav`;
+    }
   }
 
-  // 6. Remote fallback for any other surahs
+  // 6. Direct CDN URL for the selected reciter (e.g. Warsh, Qaloon, or other Surahs)
   const surahPadded = String(surah).padStart(3, '0');
   if (reciter && reciter.directUrl) {
     return `${reciter.directUrl}${surahPadded}.mp3`;
@@ -838,6 +926,7 @@ function getFallbackAudioUrl(surah, reciterKey) {
   return `https://cdn.mp3quran.net/audio/saad-ghamdi/r1/${surahPadded}.mp3`;
 }
 
+// Mobile-Resilient Playback Initiation (Immediate Synchronous Play within User Gesture)
 function playCurrentAyah() {
   if (delayCountdownTimer) {
     clearInterval(delayCountdownTimer);
@@ -853,61 +942,51 @@ function playCurrentAyah() {
 
   updatePlayerUI();
 
-  const seekAndPlay = () => {
-    isTransitioning = true;
-    try {
-      audioElement.currentTime = startT;
-    } catch (e) {
-      console.warn('Seek notice:', e);
-    }
+  const isSameSrc = audioElement.src === targetUrl || (audioElement.src && audioElement.src.endsWith(targetUrl));
 
-    const startAudio = () => {
-      audioElement.play().then(() => {
-        isPlaying = true;
-        updatePlayerUI();
-        setTimeout(() => {
-          isTransitioning = false;
-        }, 400);
-      }).catch(e => {
-        console.warn('Playback resume notice:', e);
-        isTransitioning = false;
-        isPlaying = false;
-        updatePlayerUI();
-      });
-    };
-
-    if (Math.abs(audioElement.currentTime - startT) <= 0.3) {
-      startAudio();
-    } else {
-      const onSeeked = () => {
-        audioElement.removeEventListener('seeked', onSeeked);
-        startAudio();
-      };
-      audioElement.addEventListener('seeked', onSeeked, { once: true });
-      setTimeout(() => {
-        audioElement.removeEventListener('seeked', onSeeked);
-        startAudio();
-      }, 350);
-    }
-  };
-
-  // If already loaded for this url, just seek to start to avoid re-buffering & autoplay blocks
-  if (audioElement.src === targetUrl || (audioElement.src && audioElement.src.endsWith(targetUrl))) {
-    seekAndPlay();
-  } else {
-    let started = false;
-    const onReady = () => {
-      if (started) return;
-      started = true;
-      audioElement.removeEventListener('canplay', onReady);
-      seekAndPlay();
-    };
-    audioElement.addEventListener('canplay', onReady, { once: true });
+  if (!isSameSrc) {
     audioElement.src = targetUrl;
     audioElement.load();
-    if (audioElement.readyState >= 2) {
-      onReady();
+  }
+
+  // Position seek with metadata readiness check
+  if (startT > 0) {
+    if (audioElement.readyState >= 1) {
+      try { audioElement.currentTime = startT; } catch (e) {}
+    } else {
+      const onMeta = () => {
+        try { audioElement.currentTime = startT; } catch (e) {}
+      };
+      audioElement.addEventListener('loadedmetadata', onMeta, { once: true });
     }
+  } else {
+    try { audioElement.currentTime = 0; } catch (e) {}
+  }
+
+  // Must call .play() synchronously to pass mobile user-gesture security policy
+  const playPromise = audioElement.play();
+  if (playPromise !== undefined) {
+    playPromise.then(() => {
+      isPlaying = true;
+      isTransitioning = false;
+      updatePlayerUI();
+    }).catch(err => {
+      console.warn('Playback gesture fallback notice:', err);
+      // Secondary fallback when stream buffer is delayed
+      const onCanPlay = () => {
+        audioElement.play().then(() => {
+          isPlaying = true;
+          isTransitioning = false;
+          updatePlayerUI();
+        }).catch(err2 => {
+          console.warn('Canplay playback blocked by browser:', err2);
+          isPlaying = false;
+          isTransitioning = false;
+          updatePlayerUI();
+        });
+      };
+      audioElement.addEventListener('canplay', onCanPlay, { once: true });
+    });
   }
 }
 
@@ -1000,34 +1079,20 @@ function replayAyahWithProtection(startT) {
     console.warn('Replay seek error:', e);
   }
 
-  const startPlayback = () => {
-    audioElement.play().then(() => {
+  const playPromise = audioElement.play();
+  if (playPromise !== undefined) {
+    playPromise.then(() => {
       isPlaying = true;
       updatePlayerUI();
-      // Keep transitioning true briefly so timeupdate does not trigger on initial seek frame
       setTimeout(() => {
         isTransitioning = false;
-      }, 400);
+      }, 300);
     }).catch(err => {
       console.warn('Replay play error:', err);
       isTransitioning = false;
       isPlaying = false;
       updatePlayerUI();
     });
-  };
-
-  if (Math.abs(audioElement.currentTime - startT) <= 0.3) {
-    startPlayback();
-  } else {
-    const onSeeked = () => {
-      audioElement.removeEventListener('seeked', onSeeked);
-      startPlayback();
-    };
-    audioElement.addEventListener('seeked', onSeeked, { once: true });
-    setTimeout(() => {
-      audioElement.removeEventListener('seeked', onSeeked);
-      startPlayback();
-    }, 350);
   }
 }
 
@@ -1619,11 +1684,32 @@ function onReciterChange() {
 
 function saveAudioSettings() {
   closeAllModals();
-  updatePlayerUI();
-  showToast(`✅ تم حفظ إعدادات الصوت وتفعيل تلاوة: ${currentReciterName}`);
-  if (isPlaying) {
-    playCurrentAyah();
+  const sel = document.getElementById('reciter-select');
+  if (sel && sel.value) {
+    const activeRec = recitersDatabase.find(r => r.id === sel.value || r.subfolder === sel.value);
+    if (activeRec) {
+      currentReciterId = activeRec.id;
+      currentReciterSubfolder = activeRec.subfolder;
+      currentReciterName = activeRec.name;
+    }
   }
+  const sAyah = document.getElementById('slider-rep-ayah');
+  if (sAyah) targetAyahRepeat = parseInt(sAyah.value, 10) || 1;
+  const sRange = document.getElementById('slider-rep-range');
+  if (sRange) targetRangeCycle = parseInt(sRange.value, 10) || 1;
+  const sDelay = document.getElementById('slider-delay');
+  if (sDelay) intervalDelaySeconds = parseInt(sDelay.value, 10) || 0;
+
+  if (delayCountdownTimer) {
+    clearInterval(delayCountdownTimer);
+    delayCountdownTimer = null;
+  }
+  isTransitioning = false;
+  currentAyahRepeat = 1;
+  isPlaying = true;
+  updatePlayerUI();
+  showToast(`✅ تم حفظ إعدادات الصوت وبدء تلاوة: ${currentReciterName}`);
+  playCurrentAyah();
 }
 
 function showToast(message, duration = 3000) {

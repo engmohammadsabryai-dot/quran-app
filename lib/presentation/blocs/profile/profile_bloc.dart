@@ -16,20 +16,24 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<SwitchProfileEvent>(_onSwitchProfile);
     on<CreateProfileEvent>(_onCreateProfile);
 
+    on<_ProfilesUpdatedEvent>((event, emit) {
+      final active = event.profiles.cast<dynamic>().firstWhere(
+            (p) => p.isActive == true,
+            orElse: () => event.profiles.isNotEmpty ? event.profiles.first : null,
+          );
+      emit(state.copyWith(
+        profiles: event.profiles.cast(),
+        activeProfile: active,
+        isLoading: false,
+      ));
+    });
+
     _initStreams();
   }
 
   void _initStreams() {
     _profilesSubscription = _profileRepository.watchProfiles().listen((profiles) {
-      final active = profiles.cast<dynamic>().firstWhere(
-            (p) => p.isActive == true,
-            orElse: () => profiles.isNotEmpty ? profiles.first : null,
-          );
-      emit(state.copyWith(
-        profiles: profiles,
-        activeProfile: active,
-        isLoading: false,
-      ));
+      add(_ProfilesUpdatedEvent(profiles));
     });
   }
 
@@ -59,4 +63,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     _activeProfileSubscription?.cancel();
     return super.close();
   }
+}
+
+class _ProfilesUpdatedEvent extends ProfileEvent {
+  final List<dynamic> profiles;
+  const _ProfilesUpdatedEvent(this.profiles);
+
+  @override
+  List<Object?> get props => [profiles];
 }

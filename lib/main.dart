@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'package:audio_service/audio_service.dart';
+
 import 'core/audio/hybrid_audio_player_service.dart';
 import 'core/audio/quran_audio_handler.dart';
 import 'core/network/dio_client.dart';
@@ -33,8 +35,22 @@ void main() async {
   final secureStorage = SecureStorageService();
   final database = AppDatabase.instance;
 
-  // 2. Audio Engine Setup
+  // 2. Audio Engine Setup & Background Playback Handler
   final hybridAudioService = HybridAudioPlayerService(networkClient: networkClient);
+  try {
+    final audioHandler = await AudioService.init(
+      builder: () => QuranAudioHandler(hybridAudioService.player),
+      config: const AudioServiceConfig(
+        androidNotificationChannelId: 'com.quran.memorization.mushaf.audio',
+        androidNotificationChannelName: 'تلاوة القرآن الكريم',
+        androidNotificationOngoing: true,
+        androidStopForegroundOnPause: true,
+      ),
+    );
+    hybridAudioService.attachAudioHandler(audioHandler);
+  } catch (e) {
+    debugPrint('⚠️ AudioService background handler notice: $e');
+  }
 
   // 3. Repositories
   final profileRepository = ProfileRepositoryImpl(db: database, secureStorage: secureStorage);

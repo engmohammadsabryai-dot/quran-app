@@ -12,7 +12,6 @@ class SecureStorageService {
 
   static const String _keyActiveUserId = 'active_user_id';
   static const String _keyParentalPin = 'parental_gate_pin';
-  static const String _keyOfflineAuthToken = 'offline_auth_token';
 
   Future<void> saveActiveUserId(String userId) async {
     await _storage.write(key: _keyActiveUserId, value: userId);

@@ -28,6 +28,18 @@ class PlanBloc extends Bloc<PlanEvent, PlanState> {
     on<ToggleTaskCompletedEvent>(_onToggleTaskCompleted);
     on<TogglePrayerCheckoffEvent>(_onTogglePrayerCheckoff);
     on<ApplyCompensationStrategyEvent>(_onApplyCompensation);
+    on<_TasksUpdatedInternalEvent>(_onTasksUpdatedInternal);
+  }
+
+  void _onTasksUpdatedInternal(_TasksUpdatedInternalEvent event, Emitter<PlanState> emit) {
+    emit(state.copyWith(
+      activePlan: event.plan,
+      tasks: event.tasks,
+      todayTask: event.todayTask,
+      delayedTasks: event.delayedTasks,
+      analytics: event.analytics,
+      isLoading: false,
+    ));
   }
 
   void _onLoadPlanForUser(LoadPlanForUserEvent event, Emitter<PlanState> emit) {
@@ -39,7 +51,7 @@ class PlanBloc extends Bloc<PlanEvent, PlanState> {
 
     _plansSubscription = _planRepository.watchPlansForUser(event.userId).listen((plans) {
       if (plans.isEmpty) {
-        emit(state.copyWith(activePlan: null, tasks: [], isLoading: false));
+        add(const _TasksUpdatedInternalEvent(tasks: [], delayedTasks: []));
         return;
       }
 
@@ -79,13 +91,12 @@ class PlanBloc extends Bloc<PlanEvent, PlanState> {
         getQuarterCount: (t) => (t as DailyTask).quarterIndex != null ? 1 : 0,
       );
 
-      emit(state.copyWith(
-        activePlan: plan,
+      add(_TasksUpdatedInternalEvent(
+        plan: plan,
         tasks: tasks,
         todayTask: todayT,
         delayedTasks: delayed,
         analytics: analytics,
-        isLoading: false,
       ));
     });
   }
@@ -164,4 +175,23 @@ class PlanBloc extends Bloc<PlanEvent, PlanState> {
     _tasksSubscription?.cancel();
     return super.close();
   }
+}
+
+class _TasksUpdatedInternalEvent extends PlanEvent {
+  final MemorizationPlan? plan;
+  final List<DailyTask> tasks;
+  final DailyTask? todayTask;
+  final List<DailyTask> delayedTasks;
+  final AnalyticsSummary? analytics;
+
+  const _TasksUpdatedInternalEvent({
+    this.plan,
+    required this.tasks,
+    this.todayTask,
+    required this.delayedTasks,
+    this.analytics,
+  });
+
+  @override
+  List<Object?> get props => [plan, tasks, todayTask, delayedTasks, analytics];
 }

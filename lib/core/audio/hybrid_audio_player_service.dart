@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:path/path.dart' as p;
@@ -103,6 +104,8 @@ class HybridAudioPlayerService {
   final NetworkClient _networkClient;
   QuranAudioHandler? _audioHandler;
 
+  AudioPlayer get player => _player;
+
   // Configuration
   ReciterInfo _currentReciter = AppConstants.availableReciters[0];
   int _targetAyahRepeats = 3; // N (1 to 30)
@@ -135,6 +138,16 @@ class HybridAudioPlayerService {
         _networkClient = networkClient ?? NetworkClient() {
     _initSubject();
     _initListeners();
+    _initAudioSession();
+  }
+
+  Future<void> _initAudioSession() async {
+    try {
+      final session = await AudioSession.instance;
+      await session.configure(const AudioSessionConfiguration.music());
+    } catch (e) {
+      debugPrint('⚠️ AudioSession initialization notice: $e');
+    }
   }
 
   void attachAudioHandler(QuranAudioHandler handler) {
@@ -254,8 +267,47 @@ class HybridAudioPlayerService {
     }
   }
 
+  String? _resolveBundledAssetPath(String reciterId, int surah, int ayah) {
+    final isSurah2 = (surah == 2 && ayah >= 1 && ayah <= 5);
+    final isSurah112 = (surah == 112 && ayah >= 1 && ayah <= 4);
+    if (!isSurah2 && !isSurah112) {
+      return null;
+    }
+
+    if (reciterId == 'minshawi_teacher_kids' || reciterId.contains('teacher')) {
+      return 'assets/audio/minshawi_teacher_${surah}_$ayah.wav';
+    } else if (reciterId.contains('husary')) {
+      return 'assets/audio/husary_${surah}_$ayah.wav';
+    } else if (reciterId.contains('minshawi')) {
+      return 'assets/audio/minshawi_${surah}_$ayah.wav';
+    } else if (reciterId.contains('banna')) {
+      return 'assets/audio/banna_${surah}_$ayah.wav';
+    } else if (reciterId.contains('ali_jaber')) {
+      return 'assets/audio/ali_jaber_${surah}_$ayah.wav';
+    } else if (reciterId.contains('sowaid')) {
+      return 'assets/audio/ayman_sowaid_${surah}_$ayah.wav';
+    } else if (reciterId.contains('azzawi')) {
+      return 'assets/audio/azzawi_${surah}_$ayah.wav';
+    } else if (reciterId.contains('hudhaif')) {
+      return 'assets/audio/hudhaifi_${surah}_$ayah.wav';
+    } else if (reciterId.contains('soufi')) {
+      return 'assets/audio/soufi_${surah}_$ayah.wav';
+    } else if (reciterId == 'ghamadi') {
+      return 'assets/audio/${surah}_$ayah.wav';
+    }
+
+    return 'assets/audio/${surah}_$ayah.wav';
+  }
+
   /// Cache-First & CDN Resilient Audio Resolution
   Future<AudioSource> _resolveAudioSource(int surah, int ayah) async {
+    // 1. Instant Offline Playback: Check bundled offline assets for all reciters
+    final bundledAsset = _resolveBundledAssetPath(_currentReciter.id, surah, ayah);
+    if (bundledAsset != null) {
+      debugPrint('📦 Playing bundled offline asset for ${_currentReciter.id} ($surah:$ayah) -> $bundledAsset');
+      return AudioSource.asset(bundledAsset);
+    }
+
     final surahPadded = surah.toString().padLeft(3, '0');
     final ayahPadded = ayah.toString().padLeft(3, '0');
     final remoteUrl = _currentReciter.getAyahAudioUrl(surah, ayah);
@@ -337,15 +389,32 @@ class HybridAudioPlayerService {
         await _player.seek(Duration.zero);
         await _player.play();
       } catch (e) {
-        debugPrint('⚠️ Error playing primary audio source: $e, attempting direct CDN retry');
-        try {
-          final directUrl = _currentReciter.getAyahAudioUrl(item.surahNumber, item.ayahNumber);
-          await _player.stop();
-          await _player.setAudioSource(AudioSource.uri(Uri.parse(directUrl)), initialPosition: Duration.zero);
-          await _player.seek(Duration.zero);
-          await _player.play();
-        } catch (err) {
-          debugPrint('⚠️ Direct CDN retry failed: $err');
+        debugPrint('⚠️ Error playing primary audio source: $e, attempting EveryAyah mirrors & direct CDN retry');
+        final surahPadded = item.surahNumber.toString().padLeft(3, '0');
+        final ayahPadded = item.ayahNumber.toString().padLeft(3, '0');
+        final mirrors = [
+          'http://everyayah.com/data/${_currentReciter.cdnSubfolder}/$surahPadded$ayahPadded.mp3',
+          'https://www.everyayah.com/data/${_currentReciter.cdnSubfolder}/$surahPadded$ayahPadded.mp3',
+          'https://mirrors.quranicaudio.com/everyayah/${_currentReciter.cdnSubfolder}/$surahPadded$ayahPadded.mp3',
+          _currentReciter.getSurahAudioUrl(item.surahNumber),
+        ];
+
+        bool playedSuccessfully = false;
+        for (final fallbackUrl in mirrors) {
+          try {
+            await _player.stop();
+            await _player.setAudioSource(AudioSource.uri(Uri.parse(fallbackUrl)), initialPosition: Duration.zero);
+            await _player.seek(Duration.zero);
+            await _player.play();
+            playedSuccessfully = true;
+            debugPrint('✅ Fallback succeeded with mirror: $fallbackUrl');
+            break;
+          } catch (err) {
+            debugPrint('⚠️ Mirror failed ($fallbackUrl): $err');
+          }
+        }
+        if (!playedSuccessfully) {
+          debugPrint('❌ All audio mirrors failed for ${item.surahNumber}:${item.ayahNumber}');
         }
       }
     } catch (e) {

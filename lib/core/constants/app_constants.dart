@@ -222,7 +222,7 @@ class AppConstants {
       nameEnglish: 'Mahmoud Khalil Al-Husary (Muallim)',
       riwayahId: 'hafs',
       cdnSubfolder: 'Husary_Muallim_128kbps',
-      directUrl: 'https://server13.mp3quran.net/husr/',
+      directUrl: 'https://cdn.mp3quran.net/audio/mahmoud-husary/r1/',
       style: 'المعلم مع الترديد للتعليم والمدارسة',
       isTeacherStyle: true,
     ),

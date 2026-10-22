@@ -251,8 +251,6 @@ class SmartCompensationEngine {
       );
     }
 
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
 
     int shiftedCount = 0;
     final updatedList = tasks.map((t) {
