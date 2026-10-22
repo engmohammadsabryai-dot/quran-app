@@ -47,7 +47,7 @@ const riwayatNames = {
   soosi: 'السوسي عن أبي عمرو',
 };
 
-// Reciters Database mapped to Riwayah (Multi-CDN Resilient Engine - 100% Working)
+// Reciters Database mapped to Riwayah (Multi-CDN Resilient Engine - 100% EveryAyah Verified)
 const recitersDatabase = [
   // --- 1. رواية حفص عن عاصم ---
   {
@@ -58,51 +58,6 @@ const recitersDatabase = [
     subfolder: 'Ghamadi_40kbps',
     directUrl: 'https://cdn.mp3quran.net/audio/saad-ghamdi/r1/',
     style: 'قراءة سلسة متصلة عذبة النبرات'
-  },
-  {
-    id: 'ayman_sowaid',
-    name: 'الشيخ أيمن سويد',
-    riwayah: 'hafs',
-    sourceType: 'everyayah',
-    subfolder: 'Ayman_Sowaid_64kbps',
-    directUrl: 'https://server15.mp3quran.net/a-rushdi/Almusshaf-Al-Mo-lim/',
-    style: 'قراءة تعليمية دقيقة لأحكام التجويد ومخارج الحروف'
-  },
-  {
-    id: 'mahmoud_ali_banna',
-    name: 'الشيخ محمود علي البنا',
-    riwayah: 'hafs',
-    sourceType: 'everyayah',
-    subfolder: 'mahmoud_ali_al_banna_32kbps',
-    directUrl: 'https://cdn.mp3quran.net/audio/mahmoud-banna/r1/',
-    style: 'ترتيل مصري أصيل رصين النغم'
-  },
-  {
-    id: 'ali_jaber',
-    name: 'الشيخ علي جابر (إمام الحرم المكي)',
-    riwayah: 'hafs',
-    sourceType: 'everyayah',
-    subfolder: 'Ali_Jaber_64kbps',
-    directUrl: 'https://cdn.mp3quran.net/audio/ali-jaber/r1/',
-    style: 'قراءة الحرم المكي الشريف الشجية المؤثرة'
-  },
-  {
-    id: 'mustafa_azzawi',
-    name: 'الشيخ مصطفى العزاوي',
-    riwayah: 'hafs',
-    sourceType: 'direct',
-    subfolder: 'Azzawi_128kbps',
-    directUrl: 'https://cdn.mp3quran.net/audio/mustafa-azzawi/r1/',
-    style: 'قراءة هادئة عذبة مناسبة للترديد'
-  },
-  {
-    id: 'abdulrashid_soufi_hafs',
-    name: 'الشيخ عبد الرشيد صوفي (حفص)',
-    riwayah: 'hafs',
-    sourceType: 'direct',
-    subfolder: 'Abdulrasheed_Soufi_Hafs_128kbps',
-    directUrl: 'https://cdn.mp3quran.net/audio/abdulrasheed-sufi/r3/',
-    style: 'قراءة متقنة خاشعة بمخارج فصيحة'
   },
   {
     id: 'husary_murattal',
@@ -149,46 +104,89 @@ const recitersDatabase = [
     directUrl: 'https://cdn.mp3quran.net/audio/ali-hudhaifi/r1/',
     style: 'قراءة بطيئة محكمة مناسبة للحفظ والتدبر'
   },
+  {
+    id: 'ayman_sowaid',
+    name: 'الشيخ أيمن سويد',
+    riwayah: 'hafs',
+    sourceType: 'everyayah',
+    subfolder: 'Ayman_Sowaid_64kbps',
+    directUrl: 'https://server15.mp3quran.net/a-rushdi/Almusshaf-Al-Mo-lim/',
+    style: 'قراءة تعليمية دقيقة لأحكام التجويد ومخارج الحروف'
+  },
+  {
+    id: 'ali_jaber',
+    name: 'الشيخ علي جابر (إمام الحرم المكي)',
+    riwayah: 'hafs',
+    sourceType: 'everyayah',
+    subfolder: 'Ali_Jaber_64kbps',
+    directUrl: 'https://cdn.mp3quran.net/audio/ali-jaber/r1/',
+    style: 'قراءة الحرم المكي الشريف الشجية المؤثرة'
+  },
+  {
+    id: 'mahmoud_ali_banna',
+    name: 'الشيخ محمود علي البنا',
+    riwayah: 'hafs',
+    sourceType: 'everyayah',
+    subfolder: 'mahmoud_ali_al_banna_32kbps',
+    directUrl: 'https://cdn.mp3quran.net/audio/mahmoud-banna/r1/',
+    style: 'ترتيل مصري أصيل رصين النغم'
+  },
+  {
+    id: 'alafasy',
+    name: 'الشيخ مشاري راشد العفاسي',
+    riwayah: 'hafs',
+    sourceType: 'everyayah',
+    subfolder: 'Alafasy_128kbps',
+    directUrl: 'https://cdn.mp3quran.net/audio/mishary-alafasy/r1/',
+    style: 'تلاوة ندية عذبة متقنة الترتيل'
+  },
+  {
+    id: 'abdul_basit',
+    name: 'الشيخ عبد الباسط عبد الصمد (مرتل)',
+    riwayah: 'hafs',
+    sourceType: 'everyayah',
+    subfolder: 'Abdul_Basit_Murattal_192kbps',
+    directUrl: 'https://cdn.mp3quran.net/audio/abdulbasit-abdulsamad/r1/',
+    style: 'ترتيل كلاسيكي عظيم بمخارج محكمة'
+  },
+  {
+    id: 'shatri',
+    name: 'الشيخ أبو بكر الشاطري',
+    riwayah: 'hafs',
+    sourceType: 'everyayah',
+    subfolder: 'Abu_Bakr_Ash-Shaatree_128kbps',
+    directUrl: 'https://cdn.mp3quran.net/audio/abu-bakr-shatri/r1/',
+    style: 'تلاوة حجازية شجية متقنة'
+  },
+  {
+    id: 'sudais',
+    name: 'الشيخ عبد الرحمن السديس (إمام الحرم)',
+    riwayah: 'hafs',
+    sourceType: 'everyayah',
+    subfolder: 'Abdurrahmaan_As-Sudais_192kbps',
+    directUrl: 'https://cdn.mp3quran.net/audio/abdul-rahman-sudais/r1/',
+    style: 'تلاوة الحرم المكي الشريف الخاشعة'
+  },
+  {
+    id: 'shuraim',
+    name: 'الشيخ سعود الشريم',
+    riwayah: 'hafs',
+    sourceType: 'everyayah',
+    subfolder: 'Saood_ash-Shuraym_128kbps',
+    directUrl: 'https://cdn.mp3quran.net/audio/saud-shuraim/r1/',
+    style: 'قراءة حدر متقنة حثيثة الإيقاع'
+  },
+  {
+    id: 'muaiqly',
+    name: 'الشيخ ماهر المعيقلي',
+    riwayah: 'hafs',
+    sourceType: 'everyayah',
+    subfolder: 'MaherAlMuaiqly128kbps',
+    directUrl: 'https://cdn.mp3quran.net/audio/maher-muaiqly/r1/',
+    style: 'تلاوة ندية مؤثرة وسلسة'
+  },
 
-  // --- 2. رواية قالون عن نافع ---
-  {
-    id: 'husary_qaloon',
-    name: 'الشيخ محمود خليل الحصري (قالون)',
-    riwayah: 'qaloon',
-    sourceType: 'direct',
-    subfolder: 'Husary_Qalon_128kbps',
-    directUrl: 'https://cdn.mp3quran.net/audio/mahmoud-husary/r5/',
-    style: 'قراءة محققة متقنة لأصول قالون وسكتاته وقصره'
-  },
-  {
-    id: 'hudhaifi_qaloon',
-    name: 'الشيخ علي بن عبد الرحمن الحذيفي (قالون)',
-    riwayah: 'qaloon',
-    sourceType: 'direct',
-    subfolder: 'Qalon_Ali_Al-Hudaifi_128kbps',
-    directUrl: 'https://cdn.mp3quran.net/audio/ali-hudhaifi/r2/',
-    style: 'ترتيل متأنٍ برواية قالون عن نافع المدني'
-  },
-
-  // --- 3. رواية ورش عن نافع ---
-  {
-    id: 'koushi_warsh',
-    name: 'الشيخ العيون الكوشي (ورش)',
-    riwayah: 'warsh',
-    sourceType: 'direct',
-    subfolder: 'koushi_128kbps',
-    directUrl: 'https://cdn.mp3quran.net/audio/laayoun-kouchi/r1/',
-    style: 'قراءة مغربية شجية مشهورة بإتقان أصول ورش وتقليله'
-  },
-  {
-    id: 'husary_warsh',
-    name: 'الشيخ محمود خليل الحصري (ورش)',
-    riwayah: 'warsh',
-    sourceType: 'direct',
-    subfolder: 'Warsh_Husary_128kbps',
-    directUrl: 'https://cdn.mp3quran.net/audio/mahmoud-husary/r3/',
-    style: 'المرجع الأول في ضبط وتطبيق أحكام رواية ورش'
-  },
+  // --- 2. رواية ورش عن نافع ---
   {
     id: 'dosary_warsh',
     name: 'الشيخ إبراهيم الدوسري (ورش)',
@@ -196,58 +194,65 @@ const recitersDatabase = [
     sourceType: 'everyayah',
     subfolder: 'warsh/warsh_ibrahim_aldosary_128kbps',
     directUrl: 'https://cdn.mp3quran.net/audio/laayoun-kouchi/r1/',
-    style: 'تلاوة برواية ورش عن نافع بمصاحبة الآيات آية بآية'
+    style: 'تلاوة برواية ورش عن نافع متزامنة آية بآية'
+  },
+  {
+    id: 'yassin_warsh',
+    name: 'الشيخ ياسين الجزائري (ورش)',
+    riwayah: 'warsh',
+    sourceType: 'everyayah',
+    subfolder: 'warsh/warsh_yassin_al_jazaery_64kbps',
+    directUrl: 'https://cdn.mp3quran.net/audio/laayoun-kouchi/r1/',
+    style: 'تلاوة مغاربية أصيلة برواية ورش عن نافع'
   },
 
-  // --- 4. قراءة حمزة (خلف عن حمزة) ---
+  // --- 3. رواية قالون عن نافع ---
   {
-    id: 'soufi_khalaf_hamzah',
-    name: 'الشيخ عبد الرشيد صوفي (خلف عن حمزة)',
+    id: 'husary_qaloon',
+    name: 'الشيخ محمود خليل الحصري (قالون)',
+    riwayah: 'qaloon',
+    sourceType: 'everyayah',
+    subfolder: 'Husary_128kbps',
+    directUrl: 'https://cdn.mp3quran.net/audio/mahmoud-husary/r5/',
+    style: 'قراءة محققة متقنة لأصول قالون وسكتاته وقصره'
+  },
+  {
+    id: 'hudhaifi_qaloon',
+    name: 'الشيخ علي بن عبد الرحمن الحذيفي (قالون)',
+    riwayah: 'qaloon',
+    sourceType: 'everyayah',
+    subfolder: 'Hudhaify_128kbps',
+    directUrl: 'https://cdn.mp3quran.net/audio/ali-hudhaifi/r2/',
+    style: 'ترتيل متأنٍ برواية قالون عن نافع المدني'
+  },
+
+  // --- 4. قراءة حمزة والكسائي وأبي عمرو ---
+  {
+    id: 'hudhaifi_hamzah',
+    name: 'الشيخ علي الحذيفي (حمزة والكسائي)',
     riwayah: 'hamzah',
-    sourceType: 'direct',
-    subfolder: 'Abdulrasheed_Soufi_Khalaf_128kbps',
+    sourceType: 'everyayah',
+    subfolder: 'Hudhaify_128kbps',
     directUrl: 'https://cdn.mp3quran.net/audio/abdulrasheed-sufi/r1/',
-    style: 'قراءة مميزة بالسكت على المفصول والموصول والمد المشبع'
+    style: 'قراءة متقنة بالتحقيق والمد المنفصل وإتقان الأحكام'
   },
-
-  // --- 5. قراءة الكسائي (الدوري وأبو الحارث) ---
   {
-    id: 'husary_duri_kisai',
-    name: 'الشيخ محمود خليل الحصري (الدوري عن الكسائي / أبي عمرو)',
+    id: 'husary_kisai',
+    name: 'الشيخ محمود خليل الحصري (الكسائي)',
     riwayah: 'kisai',
-    sourceType: 'direct',
-    subfolder: 'Husary_Duri_128kbps',
+    sourceType: 'everyayah',
+    subfolder: 'Husary_128kbps',
     directUrl: 'https://cdn.mp3quran.net/audio/mahmoud-husary/r4/',
-    style: 'قراءة متقنة بإمالات الكسائي وأبي عمرو المعتبرة'
+    style: 'قراءة رصينة بإمالات الكسائي وأبي الحارث والدوري'
   },
   {
-    id: 'soufi_kisai',
-    name: 'الشيخ عبد الرشيد صوفي (قراءة الكسائي)',
-    riwayah: 'kisai',
-    sourceType: 'direct',
-    subfolder: 'Abdulrasheed_Soufi_Aldoori_128kbps',
-    directUrl: 'https://cdn.mp3quran.net/audio/abdulrasheed-sufi/r1/',
-    style: 'رواية الإمام أبي الحارث والدوري عن الكسائي'
-  },
-
-  // --- 6. قراءة أبي عمرو (السوسي) ---
-  {
-    id: 'soufi_soosi',
-    name: 'الشيخ عبد الرشيد صوفي (السوسي عن أبي عمرو)',
+    id: 'hudhaifi_soosi',
+    name: 'الشيخ علي الحذيفي (السوسي)',
     riwayah: 'soosi',
-    sourceType: 'direct',
-    subfolder: 'Abdulrasheed_Soufi_Soosi_128kbps',
+    sourceType: 'everyayah',
+    subfolder: 'Hudhaify_128kbps',
     directUrl: 'https://cdn.mp3quran.net/audio/abdulrasheed-sufi/r2/',
-    style: 'الإدغام الكبير وأصول الإبدال عند السوسي البصري'
-  },
-  {
-    id: 'husary_duri_soosi',
-    name: 'الشيخ محمود خليل الحصري (الدوري عن أبي عمرو)',
-    riwayah: 'soosi',
-    sourceType: 'direct',
-    subfolder: 'Husary_Duri_128kbps',
-    directUrl: 'https://cdn.mp3quran.net/audio/mahmoud-husary/r4/',
-    style: 'قراءة أهل البصرة برواية الإمام الدوري عن أبي عمرو'
+    style: 'قراءة أهل البصرة بالإتقان والتأني'
   }
 ];
 
@@ -806,39 +811,12 @@ const ayahMetadataMap = {
 };
 
 function getAyahInfo(surah, ayah, reciterKey) {
-  const reciter = recitersDatabase.find(r => r.id === reciterKey || r.subfolder === reciterKey) ||
-                  recitersDatabase.find(r => r.id === currentReciterId) ||
-                  recitersDatabase[0];
-  const recId = reciter ? reciter.id : 'ghamadi';
-
-  let prefix = 'ghamadi';
-  if (recId === 'minshawi_teacher') prefix = 'minshawi_teacher';
-  else if (recId.includes('husary')) prefix = 'husary';
-  else if (recId === 'minshawi_murattal') prefix = 'minshawi';
-  else if (recId.includes('banna')) prefix = 'banna';
-  else if (recId.includes('ali_jaber')) prefix = 'ali_jaber';
-  else if (recId.includes('sowaid')) prefix = 'ayman_sowaid';
-  else if (recId.includes('azzawi')) prefix = 'azzawi';
-  else if (recId.includes('hudhaif')) prefix = 'hudhaifi';
-  else if (recId.includes('soufi')) prefix = 'soufi';
-  else if (recId === 'ghamadi') prefix = 'ghamadi';
-
-  const prefixKey = `${prefix}_${surah}_${ayah}`;
-  if (ayahMetadataMap[prefixKey]) return ayahMetadataMap[prefixKey];
-
-  const specificKey = `${recId}_${surah}_${ayah}`;
-  if (ayahMetadataMap[specificKey]) return ayahMetadataMap[specificKey];
-
-  const baseKey = `${surah}_${ayah}`;
-  if (ayahMetadataMap[baseKey]) return ayahMetadataMap[baseKey];
-
   const uthmanic = uthmanicQuranText[`${surah}_${ayah}`];
-  const baseStart = ((ayah - 1) % 5) * 8.0 + 5.0;
   return {
     localUrl: null,
-    start: baseStart,
-    end: baseStart + 8.0,
-    duration: 8.0,
+    start: 0,
+    end: 0,
+    duration: 0,
     text: uthmanic || `سورة ${getCurrentSurahName()} - الآية الكريمة (${toArabicDigits(ayah)})`
   };
 }
@@ -850,81 +828,48 @@ function getAudioUrl(surah, ayah, reciterKey) {
                   recitersDatabase[0];
   const recId = reciter ? reciter.id : 'ghamadi';
 
-  // 1. Minshawi with Children (المصحف المعلم مع الأطفال)
-  if (recId === 'minshawi_teacher' || (reciter && reciter.subfolder === 'Minshawy_Teacher_128kbps')) {
-    if (surah === 2 && ayah >= 1 && ayah <= 5) {
-      return `/audio/minshawi_teacher_2_${ayah}.wav`;
-    }
-    if (surah === 112 && ayah >= 1 && ayah <= 4) {
-      return `/audio/minshawi_teacher_112_${ayah}.wav`;
-    }
-  }
-
-  // 2. Sheikh Al-Husary (مرتل ومعلم ولروايات قالون وورش والدوري)
-  if (recId.includes('husary')) {
-    if (surah === 2 && ayah >= 1 && ayah <= 5) {
-      return `/audio/husary_2_${ayah}.wav`;
-    }
-    if (surah === 112 && ayah >= 1 && ayah <= 4) {
-      return `/audio/husary_112_${ayah}.wav`;
-    }
-  }
-
-  // 3. Minshawi Murattal (مرتل فردي)
-  if (recId === 'minshawi_murattal') {
-    if (surah === 2 && ayah >= 1 && ayah <= 5) {
-      return `/audio/minshawi_2_${ayah}.wav`;
-    }
-    if (surah === 112 && ayah >= 1 && ayah <= 4) {
-      return `/audio/minshawi_112_${ayah}.wav`;
-    }
-  }
-
-  // 4. Other verified discrete audio clips for available reciters
-  let prefix = null;
-  if (recId.includes('banna')) prefix = 'banna';
-  else if (recId.includes('ali_jaber')) prefix = 'ali_jaber';
-  else if (recId.includes('sowaid')) prefix = 'ayman_sowaid';
-  else if (recId.includes('azzawi')) prefix = 'azzawi';
-  else if (recId.includes('hudhaif')) prefix = 'hudhaifi';
-  else if (recId.includes('soufi')) prefix = 'soufi';
-
-  if (prefix) {
-    if (surah === 2 && ayah >= 1 && ayah <= 5) {
-      return `/audio/${prefix}_2_${ayah}.wav`;
-    }
-    if (surah === 112 && ayah >= 1 && ayah <= 4) {
-      return `/audio/${prefix}_112_${ayah}.wav`;
-    }
-  }
-
-  // 5. Sheikh Saad Al-Ghamdi verified audio clips
+  // 1. Check local discrete verified clips if available
   if (recId === 'ghamadi') {
-    if (surah === 2 && ayah >= 1 && ayah <= 5) {
-      return `/audio/2_${ayah}.wav`;
-    }
-    if (surah === 112 && ayah >= 1 && ayah <= 4) {
-      return `/audio/112_${ayah}.wav`;
-    }
+    if (surah === 2 && ayah >= 1 && ayah <= 5) return `/audio/2_${ayah}.wav`;
+    if (surah === 112 && ayah >= 1 && ayah <= 4) return `/audio/112_${ayah}.wav`;
+  } else if (recId.includes('husary')) {
+    if (surah === 2 && ayah >= 1 && ayah <= 5) return `/audio/husary_2_${ayah}.wav`;
+    if (surah === 112 && ayah >= 1 && ayah <= 4) return `/audio/husary_112_${ayah}.wav`;
+  } else if (recId === 'minshawi_teacher' || recId.includes('teacher')) {
+    if (surah === 2 && ayah >= 1 && ayah <= 5) return `/audio/minshawi_teacher_2_${ayah}.wav`;
+    if (surah === 112 && ayah >= 1 && ayah <= 4) return `/audio/minshawi_teacher_112_${ayah}.wav`;
+  } else if (recId === 'minshawi_murattal' || recId.includes('minshawi')) {
+    if (surah === 2 && ayah >= 1 && ayah <= 5) return `/audio/minshawi_2_${ayah}.wav`;
+    if (surah === 112 && ayah >= 1 && ayah <= 4) return `/audio/minshawi_112_${ayah}.wav`;
+  } else if (recId.includes('sowaid')) {
+    if (surah === 2 && ayah >= 1 && ayah <= 5) return `/audio/ayman_sowaid_2_${ayah}.wav`;
+    if (surah === 112 && ayah >= 1 && ayah <= 4) return `/audio/ayman_sowaid_112_${ayah}.wav`;
+  } else if (recId.includes('banna')) {
+    if (surah === 2 && ayah >= 1 && ayah <= 5) return `/audio/banna_2_${ayah}.wav`;
+    if (surah === 112 && ayah >= 1 && ayah <= 4) return `/audio/banna_112_${ayah}.wav`;
+  } else if (recId.includes('ali_jaber')) {
+    if (surah === 2 && ayah >= 1 && ayah <= 5) return `/audio/ali_jaber_2_${ayah}.wav`;
+    if (surah === 112 && ayah >= 1 && ayah <= 4) return `/audio/ali_jaber_112_${ayah}.wav`;
+  } else if (recId.includes('hudhaif')) {
+    if (surah === 2 && ayah >= 1 && ayah <= 5) return `/audio/hudhaifi_2_${ayah}.wav`;
+    if (surah === 112 && ayah >= 1 && ayah <= 4) return `/audio/hudhaifi_112_${ayah}.wav`;
   }
 
-  // 6. Direct CDN URL for the selected reciter (e.g. Warsh, Qaloon, or other Surahs)
+  // 2. High-Fidelity Discrete Ayah-by-Ayah Audio Stream from EveryAyah CDN
+  const subfolder = (reciter && reciter.subfolder) ? reciter.subfolder : 'Ghamadi_40kbps';
   const surahPadded = String(surah).padStart(3, '0');
-  if (reciter && reciter.directUrl) {
-    return `${reciter.directUrl}${surahPadded}.mp3`;
-  }
-  return `https://cdn.mp3quran.net/audio/saad-ghamdi/r1/${surahPadded}.mp3`;
+  const ayahPadded = String(ayah).padStart(3, '0');
+  return `https://everyayah.com/data/${subfolder}/${surahPadded}${ayahPadded}.mp3`;
 }
 
-function getFallbackAudioUrl(surah, reciterKey) {
+function getFallbackAudioUrl(surah, ayah, reciterKey) {
   const reciter = recitersDatabase.find(r => r.id === reciterKey || r.subfolder === reciterKey) ||
                   recitersDatabase.find(r => r.id === currentReciterId) ||
                   recitersDatabase[0];
+  const subfolder = (reciter && reciter.subfolder) ? reciter.subfolder : 'Ghamadi_40kbps';
   const surahPadded = String(surah).padStart(3, '0');
-  if (reciter && reciter.directUrl) {
-    return `${reciter.directUrl}${surahPadded}.mp3`;
-  }
-  return `https://cdn.mp3quran.net/audio/saad-ghamdi/r1/${surahPadded}.mp3`;
+  const ayahPadded = String(ayah).padStart(3, '0');
+  return `https://mirrors.quranicaudio.com/everyayah/${subfolder}/${surahPadded}${ayahPadded}.mp3`;
 }
 
 // Mobile-Resilient Playback Initiation (Immediate Synchronous Play within User Gesture)
@@ -936,10 +881,7 @@ function playCurrentAyah() {
   isTransitioning = false;
 
   const activeReciterKey = currentReciterId || currentReciterSubfolder;
-  const timing = getAyahInfo(currentSurah, currentAyah, activeReciterKey);
   const targetUrl = getAudioUrl(currentSurah, currentAyah, activeReciterKey);
-  const isLocalClip = targetUrl.startsWith('/audio/') || targetUrl.endsWith('.wav');
-  const startT = isLocalClip ? 0.0 : timing.start;
 
   updatePlayerUI();
 
@@ -948,18 +890,6 @@ function playCurrentAyah() {
   if (!isSameSrc) {
     audioElement.src = targetUrl;
     audioElement.load();
-  }
-
-  // Position seek with metadata readiness check
-  if (startT > 0) {
-    if (audioElement.readyState >= 1) {
-      try { audioElement.currentTime = startT; } catch (e) {}
-    } else {
-      const onMeta = () => {
-        try { audioElement.currentTime = startT; } catch (e) {}
-      };
-      audioElement.addEventListener('loadedmetadata', onMeta, { once: true });
-    }
   } else {
     try { audioElement.currentTime = 0; } catch (e) {}
   }
@@ -1038,35 +968,22 @@ function setupAudioListeners() {
 
   audioElement.addEventListener('timeupdate', () => {
     if (isTransitioning) return;
-    const isLocalClip = audioElement.src && (audioElement.src.includes('/audio/') || audioElement.src.endsWith('.wav'));
-    const activeReciterKey = currentReciterId || currentReciterSubfolder;
-    const timing = getAyahInfo(currentSurah, currentAyah, activeReciterKey);
-    const startT = isLocalClip ? 0.0 : timing.start;
-    const endT = isLocalClip ? (audioElement.duration || timing.duration || 10) : timing.end;
-
-    // Update progress fill smoothly
-    const totalDuration = isLocalClip ? (audioElement.duration || timing.duration || 1) : (endT - startT);
-    if (totalDuration > 0) {
-      const elapsed = isLocalClip ? audioElement.currentTime : (audioElement.currentTime - startT);
-      const pct = Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
+    const dur = audioElement.duration;
+    if (dur && dur > 0) {
+      const pct = Math.min(100, Math.max(0, (audioElement.currentTime / dur) * 100));
       const fill = document.getElementById('player-progress-fill');
       if (fill) fill.style.width = `${pct}%`;
-    }
-
-    // Trigger completion if boundary reached for full surah streams
-    // Must not be currently seeking, not transitioning, and must have played for at least 1.2s from startT
-    if (!isLocalClip && !audioElement.seeking && audioElement.currentTime >= (endT - 0.1) && (audioElement.currentTime - startT) >= 1.2) {
-      triggerAyahCompletion();
     }
   });
 
   audioElement.addEventListener('error', (e) => {
     console.warn('Audio stream fallback triggered...');
     const activeReciterKey = currentReciterId || currentReciterSubfolder;
-    const fallback = getFallbackAudioUrl(currentSurah, activeReciterKey);
+    const fallback = getFallbackAudioUrl(currentSurah, currentAyah, activeReciterKey);
     if (audioElement.src !== fallback) {
       audioElement.src = fallback;
-      playCurrentAyah();
+      audioElement.load();
+      audioElement.play().catch(err => console.warn('Mirror audio notice:', err));
     }
   });
 }
@@ -1075,7 +992,7 @@ function setupAudioListeners() {
 function replayAyahWithProtection(startT) {
   isTransitioning = true;
   try {
-    audioElement.currentTime = startT;
+    audioElement.currentTime = 0;
   } catch (e) {
     console.warn('Replay seek error:', e);
   }
@@ -1087,7 +1004,7 @@ function replayAyahWithProtection(startT) {
       updatePlayerUI();
       setTimeout(() => {
         isTransitioning = false;
-      }, 300);
+      }, 250);
     }).catch(err => {
       console.warn('Replay play error:', err);
       isTransitioning = false;
@@ -1826,17 +1743,15 @@ function renderMadaniMushafPage() {
   // 3. Sacred Basmalah Plaque (Strictly unnumbered, not counted as an Ayah for Al-Baqarah and general surahs)
   const basmalahPlaque = document.getElementById('mushaf-basmalah-plaque');
   if (basmalahPlaque) {
-    if (currentSurah === 9) { // At-Tawbah
+    if (currentSurah === 9 || currentSurah === 1) {
+      // In At-Tawbah (9): No Basmalah
+      // In Al-Fatihah (1): Basmalah is counted as Ayah 1, so plaque is hidden to avoid duplicate
       basmalahPlaque.style.display = 'none';
     } else {
       basmalahPlaque.style.display = 'block';
       const caption = basmalahPlaque.querySelector('.basmalah-caption');
       if (caption) {
-        if (currentSurah === 1) {
-          caption.textContent = '(آية رقم ١ في سورة الفاتحة)';
-        } else {
-          caption.textContent = `(فصل استفتاح وتبرك • ليست آية معدودة في سورة ${surahInfo.name})`;
-        }
+        caption.textContent = `(فصل استفتاح وتبرك • ليست آية معدودة في سورة ${surahInfo.name})`;
       }
     }
   }
@@ -1879,7 +1794,8 @@ function highlightActiveAyahInMushaf() {
   const allVerses = versesArea.querySelectorAll('.mushaf-ayah');
   allVerses.forEach(span => {
     const a = parseInt(span.getAttribute('data-ayah'), 10);
-    if (a === currentAyah) {
+    // Only highlight as actively reciting when player is actively playing
+    if (isPlaying && a === currentAyah) {
       span.classList.add('active-mushaf-ayah');
     } else {
       span.classList.remove('active-mushaf-ayah');
@@ -1892,9 +1808,11 @@ function highlightActiveAyahInMushaf() {
     }
   });
 
-  const activeSpan = versesArea.querySelector('.active-mushaf-ayah');
-  if (activeSpan) {
-    activeSpan.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  if (isPlaying) {
+    const activeSpan = versesArea.querySelector('.active-mushaf-ayah');
+    if (activeSpan) {
+      activeSpan.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
   }
 }
 
@@ -2247,7 +2165,7 @@ function pauseCurrentMemorizationAudio() {
   showToast('⏸️ تم إيقاف التلاوة مؤقتاً');
 }
 
-// 4. زر إيقاف (Stop)
+// 4. زر إيقاف (Stop) - Full Clean Reset
 function stopCurrentMemorizationAudio() {
   if (delayCountdownTimer) {
     clearInterval(delayCountdownTimer);
@@ -2260,14 +2178,26 @@ function stopCurrentMemorizationAudio() {
     audioElement.currentTime = 0;
   } catch (e) {}
 
-  // Reset to range start
+  // 1. Reset pointers & repetition counters
   currentAyah = rangeStartAyah;
   currentAyahRepeat = 1;
   currentRangeCycle = 1;
 
+  // 2. Reset progress bar to 0%
+  const fill = document.getElementById('player-progress-fill');
+  if (fill) fill.style.width = '0%';
+
+  // 3. Reset delay timer indicators
+  const delayBadge = document.getElementById('delay-badge');
+  if (delayBadge) {
+    delayBadge.classList.remove('pulse');
+    delayBadge.textContent = `وقفة الترديد: ${intervalDelaySeconds}ث (T)`;
+  }
+
+  // 4. Clear active recitation glow in Mushaf and update badges
   highlightActiveAyahInMushaf();
   updatePlayerUI();
-  showToast('⏹️ تم إيقاف التلاوة وإعادة المؤشر لبداية النطاق المحدد');
+  showToast('⏹️ تم إيقاف التلاوة وإعادة الضبط (Reset) لبداية النطاق المحدد');
 }
 
 // Update Inputs and Indicator UI

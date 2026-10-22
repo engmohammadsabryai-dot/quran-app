@@ -235,6 +235,21 @@ class _QuranRangeSelectorWidgetState extends State<QuranRangeSelectorWidget> {
   // 4. زر إيقاف: إيقاف كامل وإعادة الموضع إلى بداية النطاق
   void _stopPlayback() {
     context.read<AudioCubit>().stop();
+    if (mounted) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '⏹️ تم إيقاف التلاوة وإعادة الضبط (Reset) لبداية النطاق المحدد',
+            style: GoogleFonts.cairo(fontSize: 12.5, fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: AdultColors.primaryGreen,
+          duration: const Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+      );
+    }
   }
 
   @override

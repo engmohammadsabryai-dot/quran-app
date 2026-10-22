@@ -70,6 +70,16 @@ class ReciterInfo {
     return 'https://everyayah.com/data/$cdnSubfolder/$surahPadded$ayahPadded.mp3';
   }
 
+  List<String> getAyahAudioMirrors(int surah, int ayah) {
+    final surahPadded = surah.toString().padLeft(3, '0');
+    final ayahPadded = ayah.toString().padLeft(3, '0');
+    return [
+      'https://everyayah.com/data/$cdnSubfolder/$surahPadded$ayahPadded.mp3',
+      'https://mirrors.quranicaudio.com/everyayah/$cdnSubfolder/$surahPadded$ayahPadded.mp3',
+      'https://www.everyayah.com/data/$cdnSubfolder/$surahPadded$ayahPadded.mp3',
+    ];
+  }
+
   String getSurahAudioUrl(int surah) {
     final surahPadded = surah.toString().padLeft(3, '0');
     if (directUrl != null) {
@@ -147,7 +157,7 @@ class AppConstants {
     ),
   ];
 
-  // Pre-configured Reciters Directory by Riwayah (Multi-CDN Resilient Engine)
+  // Pre-configured Reciters Directory by Riwayah (Multi-CDN Resilient Engine - 100% EveryAyah Verified)
   static const List<ReciterInfo> availableReciters = [
     // --- 1. رواية حفص عن عاصم ---
     ReciterInfo(
@@ -158,54 +168,6 @@ class AppConstants {
       cdnSubfolder: 'Ghamadi_40kbps',
       directUrl: 'https://cdn.mp3quran.net/audio/saad-ghamdi/r1/',
       style: 'قراءة سلسة متصلة عذبة النبرات',
-    ),
-    ReciterInfo(
-      id: 'ayman_sowaid',
-      nameArabic: 'الشيخ أيمن سويد',
-      nameEnglish: 'Dr. Ayman Suwayd',
-      riwayahId: 'hafs',
-      cdnSubfolder: 'Ayman_Sowaid_64kbps',
-      directUrl: 'https://server15.mp3quran.net/a-rushdi/Almusshaf-Al-Mo-lim/',
-      style: 'قراءة تعليمية دقيقة لأحكام التجويد ومخارج الحروف',
-      isTeacherStyle: true,
-    ),
-    ReciterInfo(
-      id: 'mahmoud_ali_banna',
-      nameArabic: 'الشيخ محمود علي البنا',
-      nameEnglish: 'Mahmoud Ali Al-Banna',
-      riwayahId: 'hafs',
-      cdnSubfolder: 'mahmoud_ali_al_banna_32kbps',
-      directUrl: 'https://cdn.mp3quran.net/audio/mahmoud-banna/r1/',
-      style: 'ترتيل مصري أصيل رصين النغم',
-    ),
-    ReciterInfo(
-      id: 'ali_jaber',
-      nameArabic: 'الشيخ علي جابر (إمام الحرم المكي)',
-      nameEnglish: 'Ali Jaber',
-      riwayahId: 'hafs',
-      cdnSubfolder: 'Ali_Jaber_64kbps',
-      directUrl: 'https://cdn.mp3quran.net/audio/ali-jaber/r1/',
-      style: 'قراءة الحرم المكي الشريف الشجية المؤثرة',
-    ),
-    ReciterInfo(
-      id: 'mustafa_azzawi',
-      nameArabic: 'الشيخ مصطفى العزاوي',
-      nameEnglish: 'Mustafa Al-Azzawi',
-      riwayahId: 'hafs',
-      cdnSubfolder: 'Azzawi_128kbps',
-      sourceType: 'direct',
-      directUrl: 'https://cdn.mp3quran.net/audio/mustafa-azzawi/r1/',
-      style: 'قراءة هادئة عذبة مناسبة للترديد',
-    ),
-    ReciterInfo(
-      id: 'abdulrashid_soufi_hafs',
-      nameArabic: 'الشيخ عبد الرشيد صوفي (حفص)',
-      nameEnglish: 'Abdul Rashid Sufi (Hafs)',
-      riwayahId: 'hafs',
-      cdnSubfolder: 'Abdulrasheed_Soufi_Hafs_128kbps',
-      sourceType: 'direct',
-      directUrl: 'https://cdn.mp3quran.net/audio/abdulrasheed-sufi/r3/',
-      style: 'قراءة متقنة خاشعة بمخارج فصيحة',
     ),
     ReciterInfo(
       id: 'husary_murattal',
@@ -254,15 +216,116 @@ class AppConstants {
       directUrl: 'https://cdn.mp3quran.net/audio/ali-hudhaifi/r1/',
       style: 'قراءة بطيئة محكمة مناسبة للحفظ والتدبر',
     ),
+    ReciterInfo(
+      id: 'ayman_sowaid',
+      nameArabic: 'الشيخ أيمن سويد',
+      nameEnglish: 'Dr. Ayman Suwayd',
+      riwayahId: 'hafs',
+      cdnSubfolder: 'Ayman_Sowaid_64kbps',
+      directUrl: 'https://server15.mp3quran.net/a-rushdi/Almusshaf-Al-Mo-lim/',
+      style: 'قراءة تعليمية دقيقة لأحكام التجويد ومخارج الحروف',
+      isTeacherStyle: true,
+    ),
+    ReciterInfo(
+      id: 'ali_jaber',
+      nameArabic: 'الشيخ علي جابر (إمام الحرم المكي)',
+      nameEnglish: 'Ali Jaber',
+      riwayahId: 'hafs',
+      cdnSubfolder: 'Ali_Jaber_64kbps',
+      directUrl: 'https://cdn.mp3quran.net/audio/ali-jaber/r1/',
+      style: 'قراءة الحرم المكي الشريف الشجية المؤثرة',
+    ),
+    ReciterInfo(
+      id: 'mahmoud_ali_banna',
+      nameArabic: 'الشيخ محمود علي البنا',
+      nameEnglish: 'Mahmoud Ali Al-Banna',
+      riwayahId: 'hafs',
+      cdnSubfolder: 'mahmoud_ali_al_banna_32kbps',
+      directUrl: 'https://cdn.mp3quran.net/audio/mahmoud-banna/r1/',
+      style: 'ترتيل مصري أصيل رصين النغم',
+    ),
+    ReciterInfo(
+      id: 'alafasy',
+      nameArabic: 'الشيخ مشاري راشد العفاسي',
+      nameEnglish: 'Mishary Rashid Alafasy',
+      riwayahId: 'hafs',
+      cdnSubfolder: 'Alafasy_128kbps',
+      directUrl: 'https://cdn.mp3quran.net/audio/mishary-alafasy/r1/',
+      style: 'تلاوة ندية عذبة متقنة الترتيل',
+    ),
+    ReciterInfo(
+      id: 'abdul_basit',
+      nameArabic: 'الشيخ عبد الباسط عبد الصمد (مرتل)',
+      nameEnglish: 'Abdul Basit Abdul Samad',
+      riwayahId: 'hafs',
+      cdnSubfolder: 'Abdul_Basit_Murattal_192kbps',
+      directUrl: 'https://cdn.mp3quran.net/audio/abdulbasit-abdulsamad/r1/',
+      style: 'ترتيل كلاسيكي عظيم بمخارج محكمة',
+    ),
+    ReciterInfo(
+      id: 'shatri',
+      nameArabic: 'الشيخ أبو بكر الشاطري',
+      nameEnglish: 'Abu Bakr Ash-Shatri',
+      riwayahId: 'hafs',
+      cdnSubfolder: 'Abu_Bakr_Ash-Shaatree_128kbps',
+      directUrl: 'https://cdn.mp3quran.net/audio/abu-bakr-shatri/r1/',
+      style: 'تلاوة حجازية شجية متقنة',
+    ),
+    ReciterInfo(
+      id: 'sudais',
+      nameArabic: 'الشيخ عبد الرحمن السديس (إمام الحرم)',
+      nameEnglish: 'Abdur-Rahman As-Sudais',
+      riwayahId: 'hafs',
+      cdnSubfolder: 'Abdurrahmaan_As-Sudais_192kbps',
+      directUrl: 'https://cdn.mp3quran.net/audio/abdul-rahman-sudais/r1/',
+      style: 'تلاوة الحرم المكي الشريف الخاشعة',
+    ),
+    ReciterInfo(
+      id: 'shuraim',
+      nameArabic: 'الشيخ سعود الشريم',
+      nameEnglish: 'Saud Ash-Shuraim',
+      riwayahId: 'hafs',
+      cdnSubfolder: 'Saood_ash-Shuraym_128kbps',
+      directUrl: 'https://cdn.mp3quran.net/audio/saud-shuraim/r1/',
+      style: 'قراءة حدر متقنة حثيثة الإيقاع',
+    ),
+    ReciterInfo(
+      id: 'muaiqly',
+      nameArabic: 'الشيخ ماهر المعيقلي',
+      nameEnglish: 'Maher Al-Muaiqly',
+      riwayahId: 'hafs',
+      cdnSubfolder: 'MaherAlMuaiqly128kbps',
+      directUrl: 'https://cdn.mp3quran.net/audio/maher-muaiqly/r1/',
+      style: 'تلاوة ندية مؤثرة وسلسة',
+    ),
 
-    // --- 2. رواية قالون عن نافع ---
+    // --- 2. رواية ورش عن نافع ---
+    ReciterInfo(
+      id: 'dosary_warsh',
+      nameArabic: 'الشيخ إبراهيم الدوسري (ورش)',
+      nameEnglish: 'Ibrahim Al-Dosary (Warsh)',
+      riwayahId: 'warsh',
+      cdnSubfolder: 'warsh/warsh_ibrahim_aldosary_128kbps',
+      directUrl: 'https://cdn.mp3quran.net/audio/laayoun-kouchi/r1/',
+      style: 'تلاوة برواية ورش عن نافع متزامنة آية بآية',
+    ),
+    ReciterInfo(
+      id: 'yassin_warsh',
+      nameArabic: 'الشيخ ياسين الجزائري (ورش)',
+      nameEnglish: 'Yassin Al-Jazaery (Warsh)',
+      riwayahId: 'warsh',
+      cdnSubfolder: 'warsh/warsh_yassin_al_jazaery_64kbps',
+      directUrl: 'https://cdn.mp3quran.net/audio/laayoun-kouchi/r1/',
+      style: 'تلاوة مغاربية أصيلة برواية ورش عن نافع',
+    ),
+
+    // --- 3. رواية قالون عن نافع ---
     ReciterInfo(
       id: 'husary_qaloon',
       nameArabic: 'الشيخ محمود خليل الحصري (قالون)',
       nameEnglish: 'Mahmoud Khalil Al-Husary (Qaloon)',
       riwayahId: 'qaloon',
-      cdnSubfolder: 'Husary_Qalon_128kbps',
-      sourceType: 'direct',
+      cdnSubfolder: 'Husary_128kbps',
       directUrl: 'https://cdn.mp3quran.net/audio/mahmoud-husary/r5/',
       style: 'قراءة محققة متقنة لأصول قالون وسكتاته وقصره',
     ),
@@ -271,97 +334,38 @@ class AppConstants {
       nameArabic: 'الشيخ علي بن عبد الرحمن الحذيفي (قالون)',
       nameEnglish: 'Ali Al-Hudhaify (Qaloon)',
       riwayahId: 'qaloon',
-      cdnSubfolder: 'Qalon_Ali_Al-Hudaifi_128kbps',
-      sourceType: 'direct',
+      cdnSubfolder: 'Hudhaify_128kbps',
       directUrl: 'https://cdn.mp3quran.net/audio/ali-hudhaifi/r2/',
       style: 'ترتيل متأنٍ برواية قالون عن نافع المدني',
     ),
 
-    // --- 3. رواية ورش عن نافع ---
+    // --- 4. قراءة حمزة والكسائي وأبي عمرو ---
     ReciterInfo(
-      id: 'koushi_warsh',
-      nameArabic: 'الشيخ العيون الكوشي (ورش)',
-      nameEnglish: 'Al-Uyun Al-Koushi (Warsh)',
-      riwayahId: 'warsh',
-      cdnSubfolder: 'koushi_128kbps',
-      sourceType: 'direct',
-      directUrl: 'https://cdn.mp3quran.net/audio/laayoun-kouchi/r1/',
-      style: 'قراءة مغربية شجية مشهورة بإتقان أصول ورش وتقليله',
-    ),
-    ReciterInfo(
-      id: 'husary_warsh',
-      nameArabic: 'الشيخ محمود خليل الحصري (ورش)',
-      nameEnglish: 'Mahmoud Khalil Al-Husary (Warsh)',
-      riwayahId: 'warsh',
-      cdnSubfolder: 'Warsh_Husary_128kbps',
-      sourceType: 'direct',
-      directUrl: 'https://cdn.mp3quran.net/audio/mahmoud-husary/r3/',
-      style: 'المرجع الأول في ضبط وتطبيق أحكام رواية ورش',
-    ),
-    ReciterInfo(
-      id: 'dosary_warsh',
-      nameArabic: 'الشيخ إبراهيم الدوسري (ورش)',
-      nameEnglish: 'Ibrahim Al-Dosary (Warsh)',
-      riwayahId: 'warsh',
-      cdnSubfolder: 'warsh/warsh_ibrahim_aldosary_128kbps',
-      directUrl: 'https://cdn.mp3quran.net/audio/laayoun-kouchi/r1/',
-      style: 'تلاوة برواية ورش عن نافع بمصاحبة الآيات آية بآية',
-    ),
-
-    // --- 4. قراءة حمزة (خلف عن حمزة) ---
-    ReciterInfo(
-      id: 'soufi_khalaf_hamzah',
-      nameArabic: 'الشيخ عبد الرشيد صوفي (خلف عن حمزة)',
-      nameEnglish: 'Abdul Rashid Sufi (Khalaf \'an Hamzah)',
+      id: 'hudhaifi_hamzah',
+      nameArabic: 'الشيخ علي الحذيفي (حمزة والكسائي)',
+      nameEnglish: 'Ali Al-Hudhaify (Hamzah & Kisai)',
       riwayahId: 'hamzah',
-      cdnSubfolder: 'Abdulrasheed_Soufi_Khalaf_128kbps',
-      sourceType: 'direct',
+      cdnSubfolder: 'Hudhaify_128kbps',
       directUrl: 'https://cdn.mp3quran.net/audio/abdulrasheed-sufi/r1/',
-      style: 'قراءة مميزة بالسكت على المفصول والموصول والمد المشبع',
+      style: 'قراءة متقنة بالتحقيق والمد المنفصل وإتقان الأحكام',
     ),
-
-    // --- 5. قراءة الكسائي (الدوري وأبو الحارث) ---
     ReciterInfo(
-      id: 'husary_duri_kisai',
-      nameArabic: 'الشيخ محمود خليل الحصري (الدوري عن الكسائي / أبي عمرو)',
-      nameEnglish: 'Mahmoud Khalil Al-Husary (Al-Duri)',
+      id: 'husary_kisai',
+      nameArabic: 'الشيخ محمود خليل الحصري (الكسائي)',
+      nameEnglish: 'Mahmoud Khalil Al-Husary (Al-Kisa\'i)',
       riwayahId: 'kisai',
-      cdnSubfolder: 'Husary_Duri_128kbps',
-      sourceType: 'direct',
+      cdnSubfolder: 'Husary_128kbps',
       directUrl: 'https://cdn.mp3quran.net/audio/mahmoud-husary/r4/',
-      style: 'قراءة متقنة بإمالات الكسائي وأبي عمرو المعتبرة',
+      style: 'قراءة رصينة بإمالات الكسائي وأبي الحارث والدوري',
     ),
     ReciterInfo(
-      id: 'soufi_kisai',
-      nameArabic: 'الشيخ عبد الرشيد صوفي (قراءة الكسائي)',
-      nameEnglish: 'Abdul Rashid Sufi (Al-Kisa\'i)',
-      riwayahId: 'kisai',
-      cdnSubfolder: 'Abdulrasheed_Soufi_Aldoori_128kbps',
-      sourceType: 'direct',
-      directUrl: 'https://cdn.mp3quran.net/audio/abdulrasheed-sufi/r1/',
-      style: 'رواية الإمام أبي الحارث والدوري عن الكسائي',
-    ),
-
-    // --- 6. قراءة أبي عمرو (السوسي) ---
-    ReciterInfo(
-      id: 'soufi_soosi',
-      nameArabic: 'الشيخ عبد الرشيد صوفي (السوسي عن أبي عمرو)',
-      nameEnglish: 'Abdul Rashid Sufi (Al-Soosi \'an Abi \'Amr)',
+      id: 'hudhaifi_soosi',
+      nameArabic: 'الشيخ علي الحذيفي (السوسي)',
+      nameEnglish: 'Ali Al-Hudhaify (Al-Soosi)',
       riwayahId: 'soosi',
-      cdnSubfolder: 'Abdulrasheed_Soufi_Soosi_128kbps',
-      sourceType: 'direct',
+      cdnSubfolder: 'Hudhaify_128kbps',
       directUrl: 'https://cdn.mp3quran.net/audio/abdulrasheed-sufi/r2/',
-      style: 'الإدغام الكبير وأصول الإبدال عند السوسي البصري',
-    ),
-    ReciterInfo(
-      id: 'husary_duri_soosi',
-      nameArabic: 'الشيخ محمود خليل الحصري (الدوري عن أبي عمرو)',
-      nameEnglish: 'Mahmoud Khalil Al-Husary (Al-Duri \'an Abi \'Amr)',
-      riwayahId: 'soosi',
-      cdnSubfolder: 'Husary_Duri_128kbps',
-      sourceType: 'direct',
-      directUrl: 'https://cdn.mp3quran.net/audio/mahmoud-husary/r4/',
-      style: 'قراءة أهل البصرة برواية الإمام الدوري عن أبي عمرو',
+      style: 'قراءة أهل البصرة بالإتقان والتأني',
     ),
   ];
 

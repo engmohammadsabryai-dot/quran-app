@@ -300,12 +300,12 @@ class HybridAudioPlayerService {
       return 'assets/audio/${surah}_$ayah.wav';
     }
 
-    return 'assets/audio/${surah}_$ayah.wav';
+    return null;
   }
 
   /// Cache-First & CDN Resilient Audio Resolution
   Future<AudioSource> _resolveAudioSource(int surah, int ayah) async {
-    // 1. Instant Offline Playback: Check bundled offline assets for all reciters
+    // 1. Instant Offline Playback: Check bundled offline assets for verified reciters
     final bundledAsset = _resolveBundledAssetPath(_currentReciter.id, surah, ayah);
     if (bundledAsset != null) {
       debugPrint('📦 Playing bundled offline asset for ${_currentReciter.id} ($surah:$ayah) -> $bundledAsset');
@@ -393,15 +393,8 @@ class HybridAudioPlayerService {
         await _player.seek(Duration.zero);
         await _player.play();
       } catch (e) {
-        debugPrint('⚠️ Error playing primary audio source: $e, attempting EveryAyah mirrors & direct CDN retry');
-        final surahPadded = item.surahNumber.toString().padLeft(3, '0');
-        final ayahPadded = item.ayahNumber.toString().padLeft(3, '0');
-        final mirrors = [
-          'http://everyayah.com/data/${_currentReciter.cdnSubfolder}/$surahPadded$ayahPadded.mp3',
-          'https://www.everyayah.com/data/${_currentReciter.cdnSubfolder}/$surahPadded$ayahPadded.mp3',
-          'https://mirrors.quranicaudio.com/everyayah/${_currentReciter.cdnSubfolder}/$surahPadded$ayahPadded.mp3',
-          _currentReciter.getSurahAudioUrl(item.surahNumber),
-        ];
+        debugPrint('⚠️ Error playing primary audio source: $e, attempting EveryAyah mirrors');
+        final mirrors = _currentReciter.getAyahAudioMirrors(item.surahNumber, item.ayahNumber);
 
         bool playedSuccessfully = false;
         for (final fallbackUrl in mirrors) {

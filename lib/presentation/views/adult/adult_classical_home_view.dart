@@ -212,7 +212,7 @@ class _AdultClassicalHomeViewState extends State<AdultClassicalHomeView> {
                       // 2. Full Madani Quran Page Display with Live Ayah Highlighting
                       BlocBuilder<AudioCubit, PlaybackProgressState>(
                         builder: (context, audioState) {
-                          final isCurrentSurahPlaying = audioState.currentItem?.surahNumber == _surahNumber;
+                          final isCurrentSurahPlaying = audioState.isPlaying && (audioState.currentItem?.surahNumber == _surahNumber);
                           final activeAyah = isCurrentSurahPlaying ? audioState.currentItem?.ayahNumber : null;
 
                           return MadaniMushafViewWidget(
